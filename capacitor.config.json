@@ -1,0 +1,23 @@
+{
+  "appId": "com.ghan.ortusehat",
+  "appName": "Ortu Sehat",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#1F3D1F",
+  "android": {
+    "backgroundColor": "#1F3D1F",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#1F3D1F",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}
