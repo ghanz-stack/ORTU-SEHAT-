@@ -14,10 +14,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ============ VARIABEL PALET TEMA ============
+           Didefinisikan sebagai CSS custom properties supaya warna font & permukaan
+           konsisten dan mudah dirawat di satu tempat, tanpa mengubah struktur/kelas
+           Tailwind yang sudah ada di HTML.
+           TERANG: #EEEEEE (dasar), #6FCF97 (aksen lembut), #2FA084 (aksen utama), #1F6F5F (aksen gelap/teks)
+           GELAP : #273338 (dasar), #2B5748 (permukaan kartu), #618764 (garis batas), #9CB080 (teks sekunder/aksen lembut) */
+        :root {
+            --color-bg-light: #EEEEEE;
+            --color-accent-soft-light: #6FCF97;
+            --color-accent-primary-light: #2FA084;
+            --color-accent-strong-light: #1F6F5F;
+
+            --color-bg-dark: #273338;
+            --color-surface-dark: #2B5748;
+            --color-border-dark: #618764;
+            --color-accent-soft-dark: #9CB080;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F3F4F6;
-            color: #2C3E50;
+            background-color: var(--color-bg-light);
+            color: var(--color-accent-strong-light);
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -26,7 +44,7 @@
             max-width: 480px;
             height: 100vh;
             height: 100dvh;
-            background-color: #FAF9F6;
+            background-color: #EEEEEE;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
             margin: 0 auto;
             position: relative;
@@ -71,11 +89,11 @@
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .nav-item.active {
-            color: #8A9A5B;
+            color: #2FA084;
         }
         .nav-item.active i {
             transform: translateY(-2px);
-            color: #8A9A5B;
+            color: #2FA084;
         }
         .nav-item.active::after {
             content: '';
@@ -83,36 +101,95 @@
             bottom: -6px;
             width: 12px;
             height: 3px;
-            background-color: #8A9A5B;
+            background-color: #2FA084;
             border-radius: 99px;
         }
 
         /* Kustom SAGE Green */
         .btn-sage {
-            background-color: #8A9A5B;
+            background-color: #2FA084;
             color: white;
             transition: all 0.2s ease;
         }
         .btn-sage:active {
             transform: scale(0.96);
-            background-color: #76844D;
+            background-color: #1F6F5F;
         }
 
+        /* Aksesibilitas: aplikasi ini ditujukan untuk orang tua. Ukuran font diatur
+           lewat 4 level (Small/Medium/Large/Jumbo) via class di <html>, bukan fix,
+           supaya bisa diganti dari menu Pengaturan > Font tanpa mengubah tata letak. */
+        html { --fs-12: 14.5px; --fs-13: 15.5px; --fs-sm: 15.5px; }
+        html.font-small  { --fs-12: 12px;   --fs-13: 13px;   --fs-sm: 14px; }
+        html.font-medium { --fs-12: 14.5px; --fs-13: 15.5px; --fs-sm: 15.5px; }
+        html.font-large  { --fs-12: 16px;   --fs-13: 17px;   --fs-sm: 17px; }
+        html.font-jumbo  { --fs-12: 18px;   --fs-13: 19px;   --fs-sm: 19px; }
+        [class*="text-[12px]"] { font-size: var(--fs-12) !important; }
+        [class*="text-[13px]"] { font-size: var(--fs-13) !important; }
+        .text-sm { font-size: var(--fs-sm) !important; line-height: 1.5rem !important; }
+
         .gender-btn.selected {
-            border-color: #8A9A5B !important;
-            background-color: rgba(138, 154, 91, 0.12) !important;
-            color: #76844D !important;
+            border-color: #2FA084 !important;
+            background-color: rgba(47, 160, 132, 0.12) !important;
+            color: #1F6F5F !important;
         }
 
         .day-chip.selected {
-            background-color: #8A9A5B !important;
+            background-color: #2FA084 !important;
             color: white !important;
         }
 
         .if-choice.selected {
-            background-color: #8A9A5B !important;
+            background-color: #2FA084 !important;
             color: white !important;
         }
+
+        .settings-tab-btn.selected {
+            background-color: #2FA084 !important;
+            color: white !important;
+        }
+        .font-choice-btn.selected {
+            background-color: #2FA084 !important;
+            color: white !important;
+        }
+        .theme-choice-btn {
+            border-color: #E5E7EB;
+        }
+        .theme-choice-btn.selected {
+            border-color: #2FA084 !important;
+            background-color: rgba(47, 160, 132, 0.08) !important;
+        }
+
+        /* ============ TEMA GELAP ============
+           Palet: #273338 (dasar), #2B5748 (permukaan kartu), #618764 (garis batas),
+           #9CB080 (teks sekunder / aksen lembut), #ffffff (teks utama).
+           Diterapkan lewat override kelas Tailwind secara global (bukan edit per elemen)
+           supaya tidak mengganggu fungsi & struktur HTML yang sudah ada. */
+        body.theme-dark { background-color: #171f22; color: var(--color-accent-soft-dark); }
+        body.theme-dark .phone-container { background-color: var(--color-bg-dark); }
+        body.theme-dark [class*="bg-white"] { background-color: #273338 !important; }
+        body.theme-dark [class*="bg-gray-50"],
+        body.theme-dark [class*="bg-gray-100"] { background-color: #2B5748 !important; }
+        body.theme-dark .glass-card {
+            background: rgba(43, 87, 72, 0.85) !important;
+            border-color: #618764 !important;
+        }
+        body.theme-dark [class*="text-slate-800"],
+        body.theme-dark [class*="text-slate-700"],
+        body.theme-dark [class*="text-slate-900"] { color: #ffffff !important; }
+        body.theme-dark [class*="text-slate-600"],
+        body.theme-dark [class*="text-slate-800"],
+        body.theme-dark [class*="text-gray-600"] { color: #9CB080 !important; }
+        body.theme-dark [class*="border-gray-50"],
+        body.theme-dark [class*="border-gray-100"],
+        body.theme-dark [class*="border-gray-200"] { border-color: #618764 !important; }
+        /* Teks aksen hijau-tua (text-[#1F6F5F]) dirancang kontras di atas background terang;
+           di tema gelap perlu dialihkan ke aksen lembut #9CB080 agar tetap terbaca. */
+        body.theme-dark [class*="text-[#1F6F5F]"] { color: var(--color-accent-soft-dark) !important; }
+        body.theme-dark #toast { background-color: #2B5748 !important; }
+        body.theme-dark input,
+        body.theme-dark select,
+        body.theme-dark textarea { color: #ffffff !important; }
     </style>
 </head>
 <body class="bg-slate-900 md:py-6 flex items-center justify-center min-h-screen">
@@ -120,31 +197,31 @@
     <div class="phone-container w-full relative flex flex-col justify-between">
 
         <!-- =================== LAYAR ONBOARDING (PROFIL & KALKULATOR BMI) =================== -->
-        <div id="onboarding-screen" class="absolute inset-0 z-[200] bg-[#FAF9F6] flex flex-col overflow-y-auto no-scrollbar">
+        <div id="onboarding-screen" class="absolute inset-0 z-[200] bg-[#EEEEEE] flex flex-col overflow-y-auto no-scrollbar">
             <div class="px-6 py-10 space-y-6 flex-grow">
                 <div class="text-center space-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-[#8A9A5B] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#8A9A5B]/30">
+                    <div class="w-16 h-16 rounded-2xl bg-[#2FA084] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#2FA084]/30">
                         <i class="fa-solid fa-heart-pulse text-2xl animate-pulse"></i>
                     </div>
                     <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">Selamat Datang di Ortu Sehat</h1>
-                    <p class="text-xs text-gray-400 leading-relaxed px-2">Isi data diri Anda untuk menghitung IMT dan membuat rencana diet, puasa, serta latihan personal yang aman.</p>
+                    <p class="text-sm text-slate-600 leading-relaxed px-2">Isi data diri Anda untuk menghitung IMT dan membuat rencana diet, puasa, serta latihan personal yang aman.</p>
                 </div>
 
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-2">Jenis Kelamin</label>
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Jenis Kelamin</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <button type="button" onclick="selectGender('L')" id="gender-L" class="gender-btn py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-gray-500 transition-all">
+                            <button type="button" onclick="selectGender('L')" id="gender-L" class="gender-btn py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-slate-800 transition-all">
                                 <i class="fa-solid fa-mars mr-1"></i> Laki-laki
                             </button>
-                            <button type="button" onclick="selectGender('P')" id="gender-P" class="gender-btn py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-gray-500 transition-all">
+                            <button type="button" onclick="selectGender('P')" id="gender-P" class="gender-btn py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-slate-800 transition-all">
                                 <i class="fa-solid fa-venus mr-1"></i> Perempuan
                             </button>
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-2">Tingkat Aktivitas Harian</label>
-                        <select id="activityLevel" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#8A9A5B]">
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Tingkat Aktivitas Harian</label>
+                        <select id="activityLevel" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
                             <option value="1.2">Sedentary (Jarang gerak / Banyak duduk)</option>
                             <option value="1.375">Ringan (Olahraga ringan 1-3 hari/minggu)</option>
                             <option value="1.55">Sedang (Olahraga sedang 3-5 hari/minggu)</option>
@@ -152,46 +229,46 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-2">Usia (tahun)</label>
-                        <input type="number" id="input-age" placeholder="Contoh: 45" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#8A9A5B]">
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Usia (tahun)</label>
+                        <input type="number" id="input-age" placeholder="Contoh: 45" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-2">Tinggi Badan (cm)</label>
-                        <input type="number" id="input-height" oninput="updateOnboardingPreview()" placeholder="Contoh: 165" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#8A9A5B]">
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Tinggi Badan (cm)</label>
+                        <input type="number" id="input-height" oninput="updateOnboardingPreview()" placeholder="Contoh: 165" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-2">Berat Badan Saat Ini (kg)</label>
-                        <input type="number" step="0.1" id="input-weight-onboarding" oninput="updateOnboardingPreview()" placeholder="Contoh: 75" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#8A9A5B]">
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Berat Badan Saat Ini (kg)</label>
+                        <input type="number" step="0.1" id="input-weight-onboarding" oninput="updateOnboardingPreview()" placeholder="Contoh: 75" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <label class="text-xs font-bold text-slate-700">Target Berat Badan (kg)</label>
-                            <button type="button" onclick="useSuggestedTarget()" class="text-[10px] font-bold text-[#8A9A5B] hover:underline">Pakai Estimasi Ideal</button>
+                            <label class="text-sm font-bold text-slate-700">Target Berat Badan (kg)</label>
+                            <button type="button" onclick="useSuggestedTarget()" class="text-[13px] font-bold text-[#2FA084] hover:underline">Pakai Estimasi Ideal</button>
                         </div>
-                        <input type="number" step="0.1" id="input-target-weight" oninput="updateOnboardingPreview()" placeholder="Contoh: 60" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#8A9A5B]">
-                        <p class="text-[10px] text-gray-400 mt-1.5" id="target-suggestion-hint">Kosongkan untuk memakai estimasi berat ideal otomatis (IMT 22).</p>
+                        <input type="number" step="0.1" id="input-target-weight" oninput="updateOnboardingPreview()" placeholder="Contoh: 60" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
+                        <p class="text-[13px] text-slate-600 mt-1.5" id="target-suggestion-hint">Kosongkan untuk memakai estimasi berat ideal otomatis (IMT 22).</p>
                     </div>
                 </div>
 
                 <!-- Preview Real-time -->
-                <div id="onboarding-preview" class="hidden bg-[#8A9A5B]/10 border border-[#8A9A5B]/20 rounded-2xl px-4 py-3 space-y-1.5">
-                    <p class="text-[10px] font-bold text-[#76844D] uppercase tracking-wide"><i class="fa-solid fa-bolt animate-bounce"></i> Analisis Cepat</p>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-gray-500">Estimasi IMT</span>
+                <div id="onboarding-preview" class="hidden bg-[#2FA084]/10 border border-[#2FA084]/20 rounded-2xl px-4 py-3 space-y-1.5">
+                    <p class="text-[13px] font-bold text-[#1F6F5F] uppercase tracking-wide"><i class="fa-solid fa-bolt animate-bounce"></i> Analisis Cepat</p>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-800">Estimasi IMT</span>
                         <span class="font-extrabold text-slate-800" id="preview-bmi">-</span>
                     </div>
-                    <div class="flex justify-between text-xs">
-                        <span class="text-gray-500">Target Penurunan</span>
-                        <span class="font-extrabold text-[#76844D]" id="preview-target-diff">-</span>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-800">Target Penurunan</span>
+                        <span class="font-extrabold text-[#1F6F5F]" id="preview-target-diff">-</span>
                     </div>
                 </div>
 
-                <div id="onboarding-error" class="hidden text-xs font-semibold text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-3"></div>
+                <div id="onboarding-error" class="hidden text-sm font-semibold text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-3"></div>
 
-                <button onclick="submitOnboarding()" class="w-full btn-sage py-4 rounded-2xl font-bold text-sm shadow-md shadow-[#8A9A5B]/20">
+                <button onclick="submitOnboarding()" class="w-full btn-sage py-4 rounded-2xl font-bold text-sm shadow-md shadow-[#2FA084]/20">
                     Simpan & Buat Program Saya
                 </button>
-                <p class="text-[10px] text-gray-400 text-center leading-relaxed px-4">Perhitungan ini adalah estimasi umum berbasis parameter medis dasar dan bukan pengganti diagnosis klinis dokter spesialis.</p>
+                <p class="text-[13px] text-slate-600 text-center leading-relaxed px-4">Perhitungan ini adalah estimasi umum berbasis parameter medis dasar dan bukan pengganti diagnosis klinis dokter spesialis.</p>
             </div>
         </div>
 
@@ -201,42 +278,104 @@
             <!-- Header Aplikasi -->
             <header class="bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between flex-shrink-0 z-40 shadow-sm">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-[#8A9A5B] flex items-center justify-center text-white shadow-md shadow-[#8A9A5B]/20">
+                    <div class="w-10 h-10 rounded-xl bg-[#2FA084] flex items-center justify-center text-white shadow-md shadow-[#2FA084]/20">
                         <i class="fa-solid fa-person-running text-lg"></i>
                     </div>
                     <div>
                         <h1 class="text-sm font-extrabold text-slate-800 tracking-tight">ORTU SEHAT</h1>
-                        <p class="text-[10px] text-gray-400 font-bold tracking-wider uppercase" id="profile-subtitle">-</p>
+                        <p class="text-[13px] text-slate-600 font-bold tracking-wider uppercase" id="profile-subtitle">-</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="openProfileSwitcher()" class="w-9 h-9 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#8A9A5B] transition-all" title="Kelola Profil">
-                        <i class="fa-solid fa-users text-sm"></i>
-                    </button>
-                    <button onclick="openOnboarding()" class="w-9 h-9 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#8A9A5B] transition-all" title="Edit Profil">
-                        <i class="fa-solid fa-user-pen text-sm"></i>
+                    <button onclick="openSettingsModal('profil')" class="w-9 h-9 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-slate-600 hover:text-[#2FA084] transition-all" title="Pengaturan">
+                        <i class="fa-solid fa-gear text-sm"></i>
                     </button>
                 </div>
                 <!-- Notifikasi Toast Ringan -->
-                <div id="toast" class="hidden absolute top-16 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 transition-all duration-300 transform scale-90 opacity-0 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-check text-[#8A9A5B]"></i>
+                <div id="toast" class="hidden absolute top-16 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-sm px-4 py-2.5 rounded-full shadow-lg z-50 transition-all duration-300 transform scale-90 opacity-0 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-[#2FA084]"></i>
                     <span id="toast-message">-</span>
                 </div>
             </header>
 
-            <!-- Modal Kelola Profil -->
-            <div id="profile-switcher-modal" class="hidden fixed inset-0 z-[300] flex items-end justify-center">
-                <div class="absolute inset-0 bg-black/40" onclick="closeProfileSwitcher()"></div>
+            <!-- Modal Pengaturan (Profil / Tema / Font) -->
+            <div id="settings-modal" class="hidden fixed inset-0 z-[300] flex items-end justify-center">
+                <div class="absolute inset-0 bg-black/40" onclick="closeSettingsModal()"></div>
                 <div class="relative w-full max-w-[480px] bg-white rounded-t-3xl p-6 space-y-4 max-h-[85vh] overflow-y-auto no-scrollbar z-50">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-bold text-slate-800">Profil Keluarga</h3>
-                        <button onclick="closeProfileSwitcher()" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+                        <h3 class="text-sm font-bold text-slate-800">Pengaturan</h3>
+                        <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-slate-600"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Satu aplikasi dapat digunakan bergantian hingga 4 anggota keluarga secara independen.</p>
-                    <div id="profile-list-container" class="space-y-2"></div>
-                    <button id="btn-add-profile" onclick="promptAddProfile()" class="w-full py-3 rounded-2xl border-2 border-dashed border-gray-200 text-xs font-bold text-gray-400 hover:border-[#8A9A5B] hover:text-[#8A9A5B] transition-all">
-                        <i class="fa-solid fa-plus mr-1"></i> Tambah Anggota Keluarga Baru
-                    </button>
+
+                    <div class="grid grid-cols-3 gap-1.5 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+                        <button onclick="switchSettingsTab('profil')" id="settings-tab-btn-profil" class="settings-tab-btn py-2 rounded-xl text-[13px] font-bold text-[#2FA084] transition-all"><i class="fa-solid fa-user"></i> Profil</button>
+                        <button onclick="switchSettingsTab('tema')" id="settings-tab-btn-tema" class="settings-tab-btn py-2 rounded-xl text-[13px] font-bold text-[#2FA084] transition-all"><i class="fa-solid fa-palette"></i> Tema</button>
+                        <button onclick="switchSettingsTab('font')" id="settings-tab-btn-font" class="settings-tab-btn py-2 rounded-xl text-[13px] font-bold text-[#2FA084] transition-all"><i class="fa-solid fa-text-height"></i> Font</button>
+                    </div>
+
+                    <!-- Pane: Profil (kelola, edit, lihat profil) -->
+                    <div id="settings-pane-profil" class="settings-pane space-y-4">
+                        <p class="text-[13px] text-slate-600 leading-relaxed">Satu aplikasi dapat digunakan bergantian hingga 4 anggota keluarga secara independen.</p>
+                        <div id="profile-list-container" class="space-y-2"></div>
+                        <button id="btn-add-profile" onclick="promptAddProfile()" class="w-full py-3 rounded-2xl border-2 border-dashed border-gray-200 text-sm font-bold text-slate-600 hover:border-[#2FA084] hover:text-[#2FA084] transition-all">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah Anggota Keluarga Baru
+                        </button>
+                        <button onclick="openOnboarding()" class="w-full py-3 rounded-2xl font-bold text-sm bg-[#2FA084] hover:bg-[#1F6F5F] text-white transition-all">
+                            <i class="fa-solid fa-user-pen mr-1.5"></i> Edit Profil Aktif
+                        </button>
+                    </div>
+
+                    <!-- Pane: Tema (Terang / Gelap) -->
+                    <div id="settings-pane-tema" class="settings-pane space-y-3 hidden">
+                        <p class="text-[13px] text-slate-700 leading-relaxed">Pilih tampilan yang paling nyaman di mata Anda.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setTheme('light')" id="theme-choice-light" class="theme-choice-btn rounded-2xl border-2 p-3 text-left transition-all">
+                                <div class="flex gap-1.5 mb-2">
+                                    <span class="w-5 h-5 rounded-full border border-gray-200" style="background:#EEEEEE"></span>
+                                    <span class="w-5 h-5 rounded-full" style="background:#2FA084"></span>
+                                    <span class="w-5 h-5 rounded-full" style="background:#6FCF97"></span>
+                                </div>
+                                <span class="text-sm font-bold text-slate-800">Terang</span>
+                            </button>
+                            <button onclick="setTheme('dark')" id="theme-choice-dark" class="theme-choice-btn rounded-2xl border-2 p-3 text-left transition-all">
+                                <div class="flex gap-1.5 mb-2">
+                                    <span class="w-5 h-5 rounded-full" style="background:#273338"></span>
+                                    <span class="w-5 h-5 rounded-full" style="background:#2B5748"></span>
+                                    <span class="w-5 h-5 rounded-full" style="background:#9CB080"></span>
+                                </div>
+                                <span class="text-sm font-bold text-slate-800">Gelap</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pane: Font (Small / Medium / Large / Jumbo) -->
+                    <div id="settings-pane-font" class="settings-pane space-y-3 hidden">
+                        <p class="text-[13px] text-slate-600 leading-relaxed">Atur ukuran huruf di seluruh aplikasi agar lebih nyaman dibaca.</p>
+                        <div class="grid grid-cols-4 gap-1.5 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+                            <button onclick="setFontLevel('small')" id="font-choice-small" class="font-choice-btn py-2 rounded-xl text-[12px] font-bold text-[#2FA084] transition-all">Small</button>
+                            <button onclick="setFontLevel('medium')" id="font-choice-medium" class="font-choice-btn py-2 rounded-xl text-sm font-bold text-[#2FA084] transition-all">Medium</button>
+                            <button onclick="setFontLevel('large')" id="font-choice-large" class="font-choice-btn py-2 rounded-xl text-base font-bold text-[#2FA084] transition-all">Large</button>
+                            <button onclick="setFontLevel('jumbo')" id="font-choice-jumbo" class="font-choice-btn py-2 rounded-xl text-lg font-bold text-[#2FA084] transition-all">Jumbo</button>
+                        </div>
+                        <p class="text-[12px] text-slate-600 leading-relaxed"><i class="fa-solid fa-circle-info"></i> Pengaturan notifikasi alarm puasa akan hadir di sini pada pembaruan berikutnya.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Edit Jam Mulai Puasa -->
+            <div id="edit-fasting-start-modal" class="hidden fixed inset-0 z-[300] flex items-end justify-center">
+                <div class="absolute inset-0 bg-black/40" onclick="closeEditFastingStartModal()"></div>
+                <div class="relative w-full max-w-[480px] bg-white rounded-t-3xl p-6 space-y-4 z-50">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-slate-800">Atur Jam Mulai Puasa</h3>
+                        <button onclick="closeEditFastingStartModal()" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p class="text-[12px] text-slate-600 leading-relaxed">Lupa menekan tombol "Mulai Puasa" tepat waktu? Sesuaikan jam mulai sebenarnya di sini agar hitungan durasi tetap akurat.</p>
+                    <div>
+                        <label class="text-sm font-bold text-slate-700 block mb-2">Tanggal & Jam Mulai Sebenarnya</label>
+                        <input type="datetime-local" id="input-edit-fasting-start" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2FA084]">
+                    </div>
+                    <button onclick="saveEditFastingStart()" class="w-full py-3 rounded-2xl font-bold text-sm bg-[#2FA084] hover:bg-[#1F6F5F] text-white transition-all">Simpan Jam Mulai</button>
                 </div>
             </div>
 
@@ -247,29 +386,29 @@
                 <section id="summary-tab" class="tab-content active space-y-6">
                     <!-- Hero Tracker Status -->
                     <div class="glass-card p-5 rounded-3xl shadow-sm space-y-4">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-gray-400">Status Komposisi Tubuh</h2>
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-600">Status Komposisi Tubuh</h2>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-gray-50 p-4 rounded-2xl relative overflow-hidden border border-gray-100">
-                                <span class="text-xs text-gray-400 font-medium">Berat Sekarang</span>
-                                <p class="text-2xl font-extrabold text-slate-800 mt-1"><span id="weight-display">--</span> <span class="text-xs font-normal text-gray-400">kg</span></p>
+                                <span class="text-sm text-slate-600 font-medium">Berat Sekarang</span>
+                                <p class="text-2xl font-extrabold text-slate-800 mt-1"><span id="weight-display">--</span> <span class="text-sm font-normal text-slate-600">kg</span></p>
                                 <div class="absolute right-2 bottom-2 text-gray-200/50">
                                     <i class="fa-solid fa-weight-scale text-3xl"></i>
                                 </div>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-2xl relative overflow-hidden border border-gray-100">
-                                <span class="text-xs text-gray-400 font-medium">IMT / BMI</span>
+                                <span class="text-sm text-slate-600 font-medium">IMT / BMI</span>
                                 <p class="text-2xl font-extrabold text-slate-800 mt-1" id="bmi-display">--</p>
-                                <span id="bmi-badge" class="inline-block mt-2 px-2 py-0.5 bg-gray-100 text-gray-500 text-[9px] font-bold rounded-full uppercase">-</span>
+                                <span id="bmi-badge" class="inline-block mt-2 px-2 py-0.5 bg-gray-100 text-slate-800 text-[12px] font-bold rounded-full uppercase">-</span>
                             </div>
                         </div>
 
-                        <div class="bg-[#8A9A5B]/10 p-4 rounded-2xl border border-[#8A9A5B]/20 flex items-center justify-between">
+                        <div class="bg-[#2FA084]/10 p-4 rounded-2xl border border-[#2FA084]/20 flex items-center justify-between">
                             <div>
-                                <span class="text-xs text-[#76844D] font-bold">Sisa Perjalanan Target</span>
-                                <p class="text-lg font-extrabold text-[#76844D]" id="target-remaining-display">-</p>
+                                <span class="text-sm text-[#1F6F5F] font-bold">Sisa Perjalanan Target</span>
+                                <p class="text-sm font-extrabold text-slate-700" id="target-remaining-display">-</p>
                             </div>
                             <div class="text-right">
-                                <span class="text-xs text-gray-400 block font-medium">Target Utama</span>
+                                <span class="text-sm text-slate-600 block font-medium">Target Utama</span>
                                 <span class="text-sm font-extrabold text-slate-700" id="target-ideal-display">-</span>
                             </div>
                         </div>
@@ -277,36 +416,40 @@
 
                     <!-- Ringkasan Rencana Personal -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-clipboard-list text-[#8A9A5B]"></i> Cetak Biru Kalori
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list text-[#2FA084]"></i> Cetak Biru Kalori
                         </h3>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                                <p class="text-gray-400 font-medium">Kebutuhan Kalori Harian (TDEE)</p>
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="bg-white text-slate-700  p-3 rounded-xl border border-gray-100">
+                                <p class="text-slate-600 font-semibold">Kebutuhan Kalori Harian (TDEE)</p>
                                 <p class="font-extrabold text-slate-800 text-base" id="plan-tdee">-</p>
                             </div>
-                            <div class="bg-[#8A9A5B]/10 p-3 rounded-xl border border-[#8A9A5B]/20">
-                                <p class="text-[#76844D] font-medium">Target Kalori Diet (Defisit)</p>
-                                <p class="font-extrabold text-[#76844D] text-base" id="plan-target-calorie">-</p>
+                            <div class="bg-white text-slate-700  p-3 rounded-xl border border-gray-100">
+                                <p class="text-slate-600 font-semibold">Target Kalori Diet (Defisit)</p>
+                                <p class="font-extrabold text-slate-800 text-base" id="plan-target-calorie">-</p>
                             </div>
                         </div>
-                        <div class="bg-blue-50/60 p-3.5 rounded-xl border border-blue-100 text-xs">
-                            <p class="font-bold text-blue-800 mb-1"><i class="fa-solid fa-lightbulb"></i> Metode Rekomendasi: <span id="plan-recommended-label">-</span></p>
-                            <p class="text-gray-500 leading-relaxed" id="plan-recommended-reason">-</p>
-                        </div>
+						<div class="bg-[#EEEEEE] dark:bg-[#2B5748]/15 p-4 rounded-xl border border-gray-200 dark:border-[#2B5748]/40 text-sm transition-all duration-300">
+							<p class="font-extrabold text-[#1F6F5F] dark:text-[#1F6F5F] mb-1.5 flex items-center gap-2">
+								<i class="fa-solid fa-lightbulb text-amber-500 dark:text-[#1F6F5F] animate-pulse"></i> 
+								Metode Rekomendasi: 
+								<span id="plan-recommended-label" class="underline decoration-[#1F6F5F]/30 dark:decoration-[#1F6F5F]/30 font-black">-</span>
+							</p>
+							<p class="text-[#1F6F5F] text-base" id="plan-recommended-reason">-</p>
+						</div>
                     </div>
 
                     <!-- Input Berat Badan Baru -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-plus-circle text-[#8A9A5B]"></i> Perbarui Berat Badan
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle text-[#2FA084]"></i> Perbarui Berat Badan
                         </h3>
                         <div class="flex gap-2">
                             <div class="relative flex-grow">
-                                <input type="number" id="weight-input" step="0.1" placeholder="Berat badan baru" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-[#8A9A5B] font-semibold text-slate-800">
-                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">KG</span>
+                                <input type="number" id="weight-input" step="0.1" placeholder="Update BB" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-[#2FA084] font-semibold text-slate-800">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-600">KG</span>
                             </div>
-                            <button onclick="saveNewWeight()" class="btn-sage px-6 rounded-2xl font-bold text-xs shadow-md shadow-[#8A9A5B]/10">
+                            <button onclick="saveNewWeight()" class="btn-sage px-6 rounded-2xl font-bold text-sm shadow-md shadow-[#2FA084]/10">
                                 Simpan
                             </button>
                         </div>
@@ -314,7 +457,7 @@
 
                     <!-- Grafik BMI -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Status Komposisi</h3>
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Status Komposisi</h3>
                         <div class="h-44 relative">
                             <canvas id="bmiChart"></canvas>
                         </div>
@@ -325,12 +468,12 @@
                 <section id="nutrition-tab" class="tab-content space-y-6">
                     <!-- Pembagian Makronutrisi -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Target Makronutrisi Harian (<span id="macro-total-kcal">-</span> kkal)</h3>
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Target Makronutrisi Harian (<span id="macro-total-kcal">-</span> kkal)</h3>
                         <div class="grid grid-cols-2 gap-4 items-center">
                             <div class="h-32 relative">
                                 <canvas id="macroChart"></canvas>
                             </div>
-                            <div class="space-y-1.5 text-[10px] font-semibold">
+                            <div class="space-y-1.5 text-[13px] font-semibold">
                                 <div class="flex justify-between items-center p-2 border-l-4 border-blue-500 bg-blue-50 rounded-lg">
                                     <span class="text-slate-600">Protein (<span id="macro-protein-g">-</span>g)</span>
                                     <span class="text-slate-800">30%</span>
@@ -350,72 +493,197 @@
                     <!-- Pola Jendela Makan / IF -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Regimen Makan</h3>
-                            <span id="active-if-phase" class="text-[10px] font-bold px-2.5 py-0.5 bg-[#8A9A5B]/20 text-[#76844D] rounded-full">-</span>
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Regimen Makan</h3>
+                            <span id="active-if-phase" class="text-[13px] font-bold px-2.5 py-0.5 bg-[#2FA084]/20 text-[#1F6F5F] rounded-full">-</span>
                         </div>
 
                         <!-- Toggle Regimen Interaktif -->
-                        <div class="grid grid-cols-4 gap-1.5 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
-                            <button onclick="setIFPhase(0)" id="btn-if-0" class="if-choice py-2 rounded-xl text-[10px] font-bold text-gray-500 transition-all">Reguler</button>
-                            <button onclick="setIFPhase(1)" id="btn-if-1" class="if-choice py-2 rounded-xl text-[10px] font-bold text-gray-500 transition-all">17:7</button>
-                            <button onclick="setIFPhase(2)" id="btn-if-2" class="if-choice py-2 rounded-xl text-[10px] font-bold text-gray-500 transition-all">19:5</button>
-                            <button onclick="setIFPhase(3)" id="btn-if-3" class="if-choice py-2 rounded-xl text-[10px] font-bold text-gray-500 transition-all">20:4</button>
+                        <div class="grid grid-cols-4 gap-1.5 p-1.5 bg-[#2FA084]/20 rounded-2xl border border-gray-100">
+                            <button onclick="setIFPhase(0)" id="btn-if-0" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">Reguler</button>
+                            <button onclick="setIFPhase(4)" id="btn-if-4" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">16:8</button>
+                            <button onclick="setIFPhase(1)" id="btn-if-1" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">17:7</button>
+                            <button onclick="setIFPhase(2)" id="btn-if-2" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">19:5</button>
+                            <button onclick="setIFPhase(3)" id="btn-if-3" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">20:4</button>
+                            <button onclick="setIFPhase(5)" id="btn-if-5" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">OMAD</button>
+                            <button onclick="setIFPhase(6)" id="btn-if-6" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">ADF</button>
+                            <button onclick="setIFPhase(7)" id="btn-if-7" class="if-choice py-2 rounded-xl text-[13px] font-bold text-slate-800 transition-all">5:2</button>
                         </div>
-                        <p class="text-[10px] text-slate-400" id="if-recommend-note">-</p>
-                        <p class="text-[10px] text-[#8A9A5B] font-semibold" id="meal-schedule-day-note">-</p>
-                        <div class="bg-slate-800 text-white rounded-2xl px-4 py-3 flex items-center justify-between text-xs" id="fasting-window-box">
-                            <span class="font-semibold flex items-center gap-1.5"><i class="fa-solid fa-clock text-[#8A9A5B]"></i> <span id="fasting-window-label">-</span></span>
-                            <span class="text-[10px] text-slate-300" id="fasting-window-duration">-</span>
-                        </div>
+                        <p class="text-[13px] text-slate-400" id="if-recommend-note">-</p>
+                        <p class="text-[13px] text-[#2FA084] font-semibold" id="meal-schedule-day-note">-</p>
+						<div class="bg-[#2FA084] text-white rounded-2xl px-4 py-3 flex items-center justify-center gap-2 text-center flex-wra" id="fasting-window-box">
+							<i class="fa-solid fa-clock"></i>
+							<span class="font-semibold items-center" id="fasting-window-label">
+							</span>
+							<span class="opacity-70">|</span>
+							<span class="text-[13px] font-semibold" id="fasting-window-duration">
+							</span>
+						</div>
 
                         <!-- Widget Timer Puasa Real-Time -->
-                        <div class="bg-slate-800 p-5 rounded-2xl shadow-md space-y-4 text-white">
+                        <div class="bg-[#2FA084] p-5 rounded-2xl shadow-md space-y-4 text-white">
                             <div class="flex justify-between items-center">
-                                <h3 class="text-xs font-bold flex items-center gap-2"><i class="fa-solid fa-stopwatch text-[#8A9A5B]"></i> Penghitung Puasa</h3>
-                                <span id="fasting-status-badge" class="text-[9px] font-bold px-2 py-0.5 bg-slate-600 rounded-full uppercase">Standby</span>
+                                <h3 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-stopwatch text-[#2FA084]"></i> Penghitung Puasa</h3>
+                                <span id="fasting-status-badge" class="text-[12px] font-bold px-2 py-0.5 bg-slate-600 rounded-full uppercase">Standby</span>
                             </div>
                             <div class="text-center py-2">
                                 <div class="text-4xl font-black font-mono tracking-tight text-white" id="fasting-timer-display">00:00:00</div>
-                                <p class="text-[10px] text-slate-400 mt-1 font-medium" id="fasting-timer-subtitle">Pilih fase untuk mengaktifkan timer</p>
+                                <p class="text-[13px] text-white mt-1 font-semibold" id="fasting-timer-subtitle">Pilih fase untuk mengaktifkan timer</p>
                             </div>
-                            <button onclick="toggleFastingTimer()" id="btn-fasting-toggle" class="w-full py-3 rounded-xl font-bold text-xs bg-[#8A9A5B] hover:bg-[#76844D] transition-all">
+                            <button onclick="toggleFastingTimer()" id="btn-fasting-toggle" class="w-full py-3 rounded-xl font-bold text-sm bg-[#2FA084] hover:bg-[#1F6F5F] transition-all">
                                 <i class="fa-solid fa-play mr-2"></i> Mulai Puasa
                             </button>
-                            <p class="text-[9px] text-center text-slate-400" id="fasting-timer-hint">Timer berjalan otomatis walau layar ditutup.</p>
+                            <button onclick="openEditFastingStartModal()" id="btn-edit-fasting-start" class="hidden w-full py-2 rounded-xl font-bold text-[13px] bg-slate-700 hover:bg-slate-600 transition-all text-slate-200">
+                                <i class="fa-solid fa-pen mr-1.5"></i> Lupa Pencet Timer? Atur Jam Mulai
+                            </button>
+                            <div id="fasting-bio-phase-box" class="hidden bg-slate-700/60 rounded-xl p-3 border border-slate-600">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" id="bio-phase-dot"></span>
+                                    <span class="text-[13px] font-extrabold uppercase tracking-wide" id="bio-phase-label">-</span>
+                                    <span class="text-[13px] text-slate-400 ml-auto" id="bio-phase-range">-</span>
+                                </div>
+                                <p class="text-[13px] text-slate-300 leading-relaxed"><b class="text-slate-200">Hormon:</b> <span id="bio-phase-hormonal">-</span></p>
+                                <p class="text-[13px] text-slate-300 leading-relaxed mt-1"><b class="text-slate-200">Metabolisme:</b> <span id="bio-phase-metabolism">-</span></p>
+                                <p class="text-[13px] text-slate-300 leading-relaxed mt-1"><b class="text-slate-200">Seluler:</b> <span id="bio-phase-cellular">-</span></p>
+                            </div>
+                            <p class="text-[11px] font-semibold text-center text-white" id="fasting-timer-hint">Timer berjalan otomatis walau layar ditutup.</p>
                         </div>
 
                         <!-- Timeline makan harian -->
-                        <div class="relative pl-6 border-l-2 border-gray-100 space-y-5 py-1 text-xs" id="meal-timeline"></div>
+                        <div class="relative pl-6 border-l-2 border-gray-100 space-y-5 py-1 text-sm" id="meal-timeline"></div>
                     </div>
 
                     <!-- Menu Harian 7 Hari -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-utensils text-[#8A9A5B]"></i> Menu Harian Bebas Alergi (7 Hari)
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-utensils text-[#2FA084]"></i> Menu Harian Bebas(7 Hari)
                         </h3>
                         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="day-chip-container"></div>
-                        <div id="day-menu-detail" class="bg-gray-50 rounded-2xl border border-gray-100 p-4 text-xs space-y-2"></div>
-                        <p class="text-[9px] text-gray-400 leading-relaxed"><i class="fa-solid fa-info-circle"></i> Seluruh menu bebas dari telur ayam & puyuh. Sesuaikan porsi karbohidrat agar tetap dalam defisit.</p>
+                        <div id="day-menu-detail" class="bg-gray-50 rounded-2xl border border-gray-100 p-4 text-sm space-y-2"></div>
+                        <p class="text-[12px] text-slate-600 leading-relaxed"><i class="fa-solid fa-info-circle"></i> Seluruh menu bebas dari telur ayam & puyuh. Sesuaikan porsi karbohidrat agar tetap dalam defisit.</p>
                     </div>
 
                     <!-- Tracker Air Minum Interaktif -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                                <i class="fa-solid fa-glass-water text-blue-500"></i> Pelacak Air Minum
+                            <h3 class="text-sm font-bold text-[#2FA084] uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-glass-water text-[#2FA084]"></i> Pelacak Air Minum
                             </h3>
-                            <span class="text-xs font-extrabold text-blue-600" id="water-log-text">0 / 0 ml</span>
+                            <span class="text-sm font-extrabold text-[#2FA084]" id="water-log-text">0 / 0 ml</span>
                         </div>
                         <div class="bg-blue-50/60 p-4 rounded-2xl border border-blue-100 flex items-center justify-between">
                             <div>
-                                <span class="text-xs text-blue-800 block font-medium">Butuh harian Anda</span>
-                                <span class="text-base font-extrabold text-blue-700" id="water-target-display">- ml</span>
+                                <span class="text-sm text-[#2FA084] block font-medium">Butuh harian Anda</span>
+                                <span class="text-base dark:text-white font-extrabold text-[#2FA084]" id="water-target-display">- ml</span>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="logWater(-250)" class="w-9 h-9 rounded-full bg-white border border-blue-200 text-blue-600 flex items-center justify-center font-bold text-xs active:scale-90 transition-all">-</button>
-                                <button onclick="logWater(250)" class="w-14 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs active:scale-95 transition-all">+ 250ml</button>
+                                <button onclick="logWater(-250)" class="w-9 h-9 rounded-full bg-[#2FA084] text-green-100 flex items-center justify-center font-bold text-sm active:scale-90 transition-all">-</button>
+                                <button onclick="logWater(250)" class="w-14 h-9 rounded-3xl bg-[#2FA084] text-white flex items-center justify-center font-bold text-sm active:scale-95 transition-all">+250ml</button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Edukasi Lengkap Intermittent Fasting -->
+                    <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-book-medical text-[#2FA084]"></i> Panduan Intermittent Fasting
+                        </h3>
+                        <p class="text-sm text-slate-800 leading-relaxed">Pelajari berbagai variasi regimen IF dan apa yang sebenarnya terjadi di dalam tubuh Anda seiring bertambahnya jam puasa.</p>
+
+                        <details class="group border-t border-gray-100 pt-3">
+                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-slate-700 text-sm">
+                                Regimen Intermittent Fasting
+                                <span class="transition-transform group-open:rotate-180 text-slate-600 text-sm">▼</span>
+                            </summary>
+                            <div class="mt-3 overflow-x-auto no-scrollbar">
+                                <div class="space-y-6">
+										
+									<!-- 16:8 (Leangains) -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-blue-400 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-blue-500 uppercase">16:8 (Leangains) · Puasa: 16 Jam | Makan: 8 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Regimen paling populer untuk pemula. Biasanya melewatkan sarapan atau makan malam.</p>
+									</div>
+
+									<!-- 17:7 · Fase 1 -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-blue-800 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-blue-800 uppercase">17:7 · Fase 1 · Puasa: 17 Jam | Makan: 7 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Jembatan transisi efektif bagi yang merasa 16 jam terlalu mudah namun belum siap ke 18 jam.</p>
+									</div>
+
+									<!-- 19:5 · Fase 2 -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-yellow-500 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-yellow-600 uppercase">19:5 · Fase 2 · Puasa: 19 Jam | Makan: 5 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Dorongan metabolik lebih kuat. Biasanya 2x makan porsi sedang dalam jendela 5 jam.</p>
+									</div>
+
+									<!-- 20:4 (Warrior Diet) · Fase 3 -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-amber-600 uppercase">20:4 (Warrior Diet) · Fase 3 · Puasa: 20 Jam | Makan: 4 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Diadaptasi dari pola makan prajurit kuno. Puasa siang (hanya air/teh tanpa kalori), makan besar malam hari.</p>
+									</div>
+
+									<!-- OMAD (23:1) -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-orange-500 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-orange-600 uppercase">OMAD (23:1) · Puasa: 23 Jam | Makan: 1 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Tingkat lanjut. Seluruh kebutuhan kalori harian dipenuhi dalam satu sesi makan besar. Butuh perencanaan nutrisi padat agar tidak malnutrisi.</p>
+									</div>
+									<!-- 5:2 -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-red-400 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-red-400 uppercase">5:2 · Puasa: 2 Hari/Minggu | Makan: 5 Hari/Minggu</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">5 hari makan normal tanpa batasan waktu, 2 hari (tidak berurutan) membatasi kalori ekstrem (500–600 kkal/hari).</p>
+									</div>
+
+									<!-- Alternate-Day Fasting -->
+									<div class="relative">
+										<div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-rose-600 border-2 border-white"></div>
+										<p class="text-sm font-extrabold text-rose-600 uppercase">Alternate-Day Fasting · Puasa: 36 Jam | Makan: 12 Jam</p>
+										<p class="text-sm text-gray-600 mt-1 leading-relaxed">Puasa penuh 36 jam (malam hari pertama hingga pagi hari ketiga), diselingi 12 jam jendela makan hari berikutnya.</p>
+									</div>
+								</div>
+                            </div>
+                            <p class="text-[13px] text-slate-600 mt-2 leading-relaxed">Ketujuh regimen di atas kini bisa langsung dipilih di bagian "Regimen Makan". Untuk ADF, timer mengikuti sesi puasa 36 jam; untuk 5:2, aplikasi tidak memakai timer harian karena polanya mingguan (2 hari pembatasan kalori, bukan jam).</p>
+                        </details>
+
+                        <details class="group border-t border-gray-100 pt-3">
+                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-slate-700 text-sm">
+                                Perubahan Biologis Berdasarkan Jam Puasa
+                                <span class="transition-transform group-open:rotate-180 text-slate-600 text-sm">▼</span>
+                            </summary>
+                            <p class="text-sm text-slate-800 mt-2 leading-relaxed">Ketika asupan makanan dihentikan, tubuh beralih dari membakar glukosa (karbohidrat) menjadi membakar asam lemak bebas dan keton (lemak) sebagai bahan bakar utama. Berikut peta jalan biologisnya:</p>
+                            <div class="relative pl-6 border-l-2 border-gray-100 space-y-5 py-3 mt-1">
+                                <div class="relative">
+                                    <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-blue-400 border-2 border-white"></div>
+                                    <p class="text-sm font-extrabold text-blue-500 uppercase">0 – 4 Jam · Fase Absorptif</p>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Insulin melonjak membantu sel menyerap glukosa dari makanan. Sisa glukosa disimpan di hati & otot sebagai glikogen, sebagian jadi lemak. Proses anabolik (pertumbuhan & penyimpanan) sedang aktif.</p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-cyan-500 border-2 border-white"></div>
+                                    <p class="text-sm font-extrabold text-cyan-600 uppercase">4 – 12 Jam · Pasca-Absorptif</p>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Gula darah mulai stabil, insulin menurun signifikan, glukagon naik untuk memicu pelepasan energi cadangan. Tubuh mulai membakar cadangan glikogen di hati.</p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></div>
+                                    <p class="text-sm font-extrabold text-emerald-600 uppercase">12 – 18 Jam · Transisi Metabolik & Lipolisis</p>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Insulin di level dasar rendah. Glikogen hati hampir habis (menyusut 50–80%). Tubuh mulai lipolisis (memecah lemak jadi asam lemak bebas). Hati mulai memproduksi keton (BHB) — bahan bakar super untuk fokus mental. <span class="italic text-slate-600">Sweet spot untuk pelaku 16:8, 17:7, dan 19:5.</span></p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-[#2FA084] border-2 border-white"></div>
+                                    <p class="text-sm font-extrabold text-[#1F6F5F] uppercase">18 – 24 Jam · Ketosis Aktif & Awal Autofagi</p>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Hormon Pertumbuhan (HGH) melonjak drastis (hingga 200–500%) melindungi massa otot. Autofagi dimulai — sel mendaur ulang protein rusak & membasmi patogen intraseluler. Tubuh resmi ketosis ringan. <span class="italic text-slate-600">Dicapai optimal oleh pelaku 20:4 dan OMAD.</span></p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-purple-500 border-2 border-white"></div>
+                                    <p class="text-sm font-extrabold text-purple-600 uppercase">24 – 48 Jam · Autofagi Maksimal & Regenerasi Sel</p>
+                                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">Insulin tetap sangat rendah, sensitivitas insulin seluler meningkat dramatis (baik untuk resistensi insulin/Diabetes Tipe 2). Autofagi mencapai puncak, sel imun rusak dihancurkan untuk beri ruang sel imun baru. Penanda inflamasi (CRP & sitokin) menurun tajam.</p>
+                                </div>
+                            </div>
+                            <p class="text-[13px] text-slate-600 mt-1 leading-relaxed">Catatan: fase 24–48 jam bersifat lanjutan dan sebaiknya tidak dilakukan rutin tanpa pemantauan medis, terutama bagi pengguna usia lanjut.</p>
+                        </details>
                     </div>
                 </section>
 
@@ -424,35 +692,35 @@
                     <!-- Ringkasan Log Kalori -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Asupan Kalori Hari Ini</h3>
-                            <span class="text-[9px] text-gray-400 font-bold" id="calorie-log-date">-</span>
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Asupan Kalori Hari Ini</h3>
+                            <span class="text-[12px] text-slate-600 font-bold" id="calorie-log-date">-</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="grid grid-cols-3 gap-2 text-center text-sm">
                             <div class="bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                                <p class="text-[10px] text-gray-400 font-medium">Masuk</p>
+                                <p class="text-[13px] text-slate-600 font-medium">Masuk</p>
                                 <p class="text-base font-extrabold text-slate-800" id="calorie-consumed-display">0</p>
                             </div>
                             <div class="bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                                <p class="text-[10px] text-gray-400 font-medium">Target</p>
+                                <p class="text-[13px] text-slate-600 font-medium">Target</p>
                                 <p class="text-base font-extrabold text-slate-800" id="calorie-budget-display">-</p>
                             </div>
                             <div class="p-3 rounded-2xl border" id="calorie-remaining-box">
-                                <p class="text-[10px] font-medium" id="calorie-remaining-label">Sisa</p>
+                                <p class="text-[13px] font-medium" id="calorie-remaining-label">Sisa</p>
                                 <p class="text-base font-extrabold" id="calorie-remaining-display">-</p>
                             </div>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                            <div id="calorie-progress-bar" class="h-full rounded-full transition-all duration-300 bg-[#8A9A5B]" style="width: 0%"></div>
+                            <div id="calorie-progress-bar" class="h-full rounded-full transition-all duration-300 bg-[#2FA084]" style="width: 0%"></div>
                         </div>
                     </div>
 
                     <!-- Pencarian Makanan -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3 relative">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-magnifying-glass text-[#8A9A5B]"></i> Cari & Catat Makanan
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-[#2FA084]"></i> Cari & Catat Makanan
                         </h3>
                         <div class="relative">
-                            <input type="text" id="food-search-input" oninput="handleFoodSearch()" placeholder="Contoh: nasi merah, tahu..." autocomplete="off" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-[#8A9A5B] font-semibold text-slate-800">
+                            <input type="text" id="food-search-input" oninput="handleFoodSearch()" placeholder="Contoh: nasi merah, tahu..." autocomplete="off" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-[#2FA084] font-semibold text-slate-800">
                             <!-- Hasil Pencarian -->
                             <div id="food-search-results" class="hidden absolute left-0 right-0 top-[115%] bg-white border border-gray-150 rounded-2xl shadow-xl z-50 max-h-60 overflow-y-auto no-scrollbar divide-y divide-gray-50"></div>
                         </div>
@@ -461,48 +729,48 @@
                     <!-- Catatan Log Makanan Harian -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Daftar Makanan Hari Ini</h3>
-                            <button onclick="clearTodayFoodLog()" class="text-[9px] font-extrabold text-red-500 uppercase hover:underline">Reset</button>
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Daftar Makanan Hari Ini</h3>
+                            <button onclick="clearTodayFoodLog()" class="text-[12px] font-extrabold text-red-500 uppercase hover:underline">Reset</button>
                         </div>
                         <div id="food-log-container" class="divide-y divide-gray-50"></div>
-                        <p id="food-log-empty" class="text-xs text-gray-400 text-center py-4 hidden">Belum ada makanan dicatat hari ini.</p>
+                        <p id="food-log-empty" class="text-sm text-slate-600 text-center py-4 hidden">Belum ada makanan dicatat hari ini.</p>
                     </div>
                 </section>
 
                 <!-- =================== TAB 4: LATIHAN & STOPWATCH =================== -->
                 <section id="workout-tab" class="tab-content space-y-6">
                     <!-- Stopwatch Olahraga -->
-                    <div class="bg-slate-800 text-white p-5 rounded-3xl shadow-md space-y-4">
+                    <div class="bg-[#2FA084] text-white p-5 rounded-3xl shadow-md space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-[9px] text-[#8A9A5B] font-bold uppercase tracking-wider">Stopwatch Latihan</span>
-                            <i class="fa-solid fa-stopwatch text-slate-500"></i>
+                            <span class="text-[12px] text-white font-bold uppercase tracking-wider">Stopwatch Latihan</span>
+                            <i class="fa-solid fa-stopwatch text-white"></i>
                         </div>
                         <div class="text-center py-2">
                             <div class="text-4xl font-black font-mono tracking-tight text-white" id="timer-display">00:00.0</div>
                         </div>
                         <div class="flex justify-center gap-3">
-                            <button onclick="resetTimer()" class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center active:scale-90 transition-all text-xs">
+                            <button onclick="resetTimer()" class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center active:scale-95 transition-all text-sm">
                                 <i class="fa-solid fa-rotate-left"></i>
                             </button>
-                            <button onclick="toggleTimer()" id="btn-timer-play" class="w-12 h-12 rounded-full bg-[#8A9A5B] flex items-center justify-center active:scale-95 transition-all shadow-md shadow-[#8A9A5B]/30">
+                            <button onclick="toggleTimer()" id="btn-timer-play" class="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center active:scale-95 transition-all shadow-md shadow-[#2FA084]/30">
                                 <i class="fa-solid fa-play text-lg ml-0.5" id="timer-icon"></i>
                             </button>
-                            <button onclick="presetTimer(30)" class="px-3 rounded-xl bg-slate-700 text-[10px] font-bold active:scale-90 transition-all">
-                                +30s
+                            <button onclick="presetTimer(30)" class="px-3 rounded-full bg-slate-600 text-[13px] font-bold active:scale-90 transition-all">
+                                +30
                             </button>
                         </div>
                     </div>
 
                     <!-- Progres Latihan Harian -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
-                        <div class="flex justify-between items-center text-xs">
+                        <div class="flex justify-between items-center text-sm">
                             <span class="font-bold text-slate-800">Progres Latihan Hari Ini</span>
-                            <span class="font-extrabold text-[#76844D]" id="workout-progress-text">0% Selesai</span>
+                            <span class="font-extrabold text-[#1F6F5F]" id="workout-progress-text">0% Selesai</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                            <div id="workout-progress-bar" class="bg-[#8A9A5B] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                            <div id="workout-progress-bar" class="bg-[#2FA084] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
                         </div>
-                        <p class="text-[10px] text-gray-400" id="workout-level-note">-</p>
+                        <p class="text-[13px] text-slate-600" id="workout-level-note">-</p>
                     </div>
 
                     <!-- Kartu-kartu Latihan (Dinamis) -->
@@ -511,11 +779,27 @@
 
                 <!-- =================== TAB 5: PETA JALAN =================== -->
                 <section id="milestones-tab" class="tab-content space-y-6">
+                    <!-- Grafik Perkembangan Berat Badan (Riil, dengan Timeframe) -->
+                    <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Perkembangan Berat Badan</h3>
+                        </div>
+                        <div class="flex gap-2" id="trend-range-tabs">
+                            <button onclick="setWeightTrendRange('1W')" data-range="1W" class="trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-gray-200 text-slate-600 transition-all">1 Minggu</button>
+                            <button onclick="setWeightTrendRange('1M')" data-range="1M" class="trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-gray-200 text-slate-600 transition-all">1 Bulan</button>
+                            <button onclick="setWeightTrendRange('1Y')" data-range="1Y" class="trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-gray-200 text-slate-600 transition-all">1 Tahun</button>
+                        </div>
+                        <div class="h-56 relative">
+                            <canvas id="weightTrendChart"></canvas>
+                            <p id="weight-trend-empty" class="hidden absolute inset-0 flex items-center justify-center text-center text-sm text-slate-600 px-8">Belum ada catatan berat badan di rentang waktu ini.</p>
+                        </div>
+                    </div>
+
                     <!-- Kurva Proyeksi 6 Bulan -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Peta Jalan 6 Bulan</h3>
-                            <span class="text-[9px] text-[#8A9A5B] font-bold uppercase tracking-wider">Rencana vs Riil</span>
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Peta Jalan 6 Bulan</h3>
+                            <span class="text-[13px] text-[#2FA084] font-bold uppercase tracking-wider">Rencana vs Riil</span>
                         </div>
                         <div class="h-60 relative">
                             <canvas id="weightJourneyChart"></canvas>
@@ -525,29 +809,29 @@
                     <!-- Riwayat Input Berat -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Riwayat Pengukuran</h3>
-                            <button onclick="resetWeightLog()" class="text-[9px] font-extrabold text-red-500 uppercase hover:underline">Reset</button>
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Riwayat Pengukuran</h3>
+                            <button onclick="resetWeightLog()" class="text-[13px] font-extrabold text-red-500 uppercase hover:underline">Reset Semua</button>
                         </div>
                         <div class="divide-y divide-gray-50 max-h-52 overflow-y-auto no-scrollbar" id="weight-log-container"></div>
                     </div>
 
                     <!-- FAQ -->
                     <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-3">
-                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Pedoman Mengatasi Masalah</h3>
-                        <div class="space-y-2 text-xs">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Pedoman Mengatasi Masalah</h3>
+                        <div class="space-y-2 text-sm">
                             <details class="group border-b border-gray-50 pb-2">
                                 <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-slate-700">
                                     Lapar berat saat berpuasa?
-                                    <span class="transition-transform group-open:rotate-180 text-gray-400 text-[9px]">▼</span>
+                                    <span class="transition-transform group-open:rotate-180 text-slate-600 text-[12px]">▼</span>
                                 </summary>
-                                <p class="text-gray-500 mt-2 leading-relaxed">Itu adalah dorongan psikologis di awal program. Minumlah air putih hangat atau teh hijau tawar hangat tanpa gula untuk menenangkan lambung Anda.</p>
+                                <p class="text-slate-800 mt-2 leading-relaxed">Itu adalah dorongan psikologis di awal program. Minumlah air putih hangat atau teh hijau tawar hangat tanpa gula untuk menenangkan lambung Anda.</p>
                             </details>
                             <details class="group border-b border-gray-50 pb-2">
                                 <summary class="flex justify-between items-center font-bold cursor-pointer list-none text-slate-700">
                                     Berat badan stuck (plateau)?
-                                    <span class="transition-transform group-open:rotate-180 text-gray-400 text-[9px]">▼</span>
+                                    <span class="transition-transform group-open:rotate-180 text-slate-600 text-[12px]">▼</span>
                                 </summary>
-                                <p class="text-gray-500 mt-2 leading-relaxed">Jika berat badan tidak turun selama >2 minggu, naikkan durasi puasa ke Fase 2 (19:5) atau lakukan jalan kaki ringan 15 menit tambahan per hari.</p>
+                                <p class="text-slate-800 mt-2 leading-relaxed">Jika berat badan tidak turun selama >2 minggu, naikkan durasi puasa ke Fase 2 (19:5) atau lakukan jalan kaki ringan 15 menit tambahan per hari.</p>
                             </details>
                         </div>
                     </div>
@@ -557,25 +841,25 @@
 
             <!-- Navigasi Bawah Terpasang Kuat di dasar .phone-container -->
             <nav class="absolute bottom-5 left-4 right-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-[28px] px-1 py-2 flex justify-around items-center z-50 shadow-xl shadow-black/10">
-                <button onclick="switchTab('summary')" id="nav-summary" class="nav-item active flex flex-col items-center gap-0.5 text-gray-400 hover:text-slate-700 transition-all px-1.5 py-1">
+                <button onclick="switchTab('summary')" id="nav-summary" class="nav-item active flex flex-col items-center gap-0.5 text-slate-600 hover:text-slate-700 transition-all px-1.5 py-1">
                     <i class="fa-solid fa-house-chimney text-base"></i>
-                    <span class="text-[8px] font-bold">Ringkasan</span>
+                    <span class="text-[12px] font-bold">Ringkasan</span>
                 </button>
-                <button onclick="switchTab('nutrition')" id="nav-nutrition" class="nav-item flex flex-col items-center gap-0.5 text-gray-400 hover:text-slate-700 transition-all px-1.5 py-1">
+                <button onclick="switchTab('nutrition')" id="nav-nutrition" class="nav-item flex flex-col items-center gap-0.5 text-slate-600 hover:text-slate-700 transition-all px-1.5 py-1">
                     <i class="fa-solid fa-plate-wheat text-base"></i>
-                    <span class="text-[8px] font-bold">Nutrisi</span>
+                    <span class="text-[12px] font-bold">Nutrisi</span>
                 </button>
-                <button onclick="switchTab('calculator')" id="nav-calculator" class="nav-item flex flex-col items-center gap-0.5 text-gray-400 hover:text-slate-700 transition-all px-1.5 py-1">
+                <button onclick="switchTab('calculator')" id="nav-calculator" class="nav-item flex flex-col items-center gap-0.5 text-slate-600 hover:text-slate-700 transition-all px-1.5 py-1">
                     <i class="fa-solid fa-calculator text-base"></i>
-                    <span class="text-[8px] font-bold">Kalori</span>
+                    <span class="text-[12px] font-bold">Kalori</span>
                 </button>
-                <button onclick="switchTab('workout')" id="nav-workout" class="nav-item flex flex-col items-center gap-0.5 text-gray-400 hover:text-slate-700 transition-all px-1.5 py-1">
+                <button onclick="switchTab('workout')" id="nav-workout" class="nav-item flex flex-col items-center gap-0.5 text-slate-600 hover:text-slate-700 transition-all px-1.5 py-1">
                     <i class="fa-solid fa-dumbbell text-base"></i>
-                    <span class="text-[8px] font-bold">Latihan</span>
+                    <span class="text-[12px] font-bold">Latihan</span>
                 </button>
-                <button onclick="switchTab('milestones')" id="nav-milestones" class="nav-item flex flex-col items-center gap-0.5 text-gray-400 hover:text-slate-700 transition-all px-1.5 py-1">
+                <button onclick="switchTab('milestones')" id="nav-milestones" class="nav-item flex flex-col items-center gap-0.5 text-slate-600 hover:text-slate-700 transition-all px-1.5 py-1">
                     <i class="fa-solid fa-chart-line text-base"></i>
-                    <span class="text-[8px] font-bold">Progres</span>
+                    <span class="text-[12px] font-bold">Progres</span>
                 </button>
             </nav>
 
@@ -645,10 +929,10 @@
         // ======================================================================
         function computeBmiCategory(bmi) {
             // Standar Asia-Pasifik yang disesuaikan
-            if (bmi < 18.5) return { label: 'Kurang (Underweight)', badgeClass: 'bg-blue-100 text-blue-700' };
-            if (bmi < 23.0) return { label: 'Normal (Ideal)', badgeClass: 'bg-green-100 text-green-700' };
-            if (bmi < 25.0) return { label: 'Kelebihan (Overweight)', badgeClass: 'bg-yellow-100 text-yellow-700' };
-            return { label: 'Sangat Berlebih (Obesitas)', badgeClass: 'bg-red-100 text-red-700' };
+            if (bmi < 18.5) return { label: 'Kurang (Underweight)', badgeClass: 'text-blue-700' };
+            if (bmi < 23.0) return { label: 'Normal (Ideal)', badgeClass: 'text-green-700' };
+            if (bmi < 25.0) return { label: 'Kelebihan (Overweight)', badgeClass: 'text-yellow-700' };
+            return { label: 'Obesitas', badgeClass: 'font-semibold rounded-xl dark:bg-[#F62440] text-white' };
         }
 
         function computeProfile(profile) {
@@ -746,7 +1030,9 @@
 
         function getFastingWindowInfo(ifPhase) {
             // Jam makan (jumlah jam per hari boleh makan) untuk tiap regimen
-            const eatHours = { 1: 7, 2: 5, 3: 4 };
+            // 1:17:7 2:19:5 3:20:4 4:16:8 5:OMAD(23:1) 6:ADF(36:12) — 7 (5:2) sengaja tidak
+            // dimasukkan karena bukan pola harian, melainkan pola mingguan.
+            const eatHours = { 1: 7, 2: 5, 3: 4, 4: 8, 5: 1, 6: 12 };
             if (ifPhase === 0 || !eatHours[ifPhase]) return null;
             const hours = eatHours[ifPhase];
 
@@ -788,7 +1074,7 @@
         let fastingIntervalId = null;
 
         function getFastingTargetHours(ifPhase) {
-            const map = { 1: 17, 2: 19, 3: 20 };
+            const map = { 1: 17, 2: 19, 3: 20, 4: 16, 5: 23, 6: 36 };
             return map[ifPhase] || null;
         }
 
@@ -819,6 +1105,48 @@
             }
         }
 
+        function openEditFastingStartModal() {
+            if (!appState.fasting || !appState.fasting.active) {
+                showToast('Mulai puasa terlebih dahulu sebelum mengatur jam mulai.');
+                return;
+            }
+            const start = new Date(appState.fasting.startTime);
+            // Format ke 'YYYY-MM-DDTHH:mm' sesuai kebutuhan input datetime-local, memakai waktu lokal
+            const pad = (n) => n.toString().padStart(2, '0');
+            const localValue = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}T${pad(start.getHours())}:${pad(start.getMinutes())}`;
+            document.getElementById('input-edit-fasting-start').value = localValue;
+            document.getElementById('edit-fasting-start-modal').classList.remove('hidden');
+        }
+
+        function closeEditFastingStartModal() {
+            document.getElementById('edit-fasting-start-modal').classList.add('hidden');
+        }
+
+        function saveEditFastingStart() {
+            const val = document.getElementById('input-edit-fasting-start').value;
+            if (!val) {
+                showToast('Pilih tanggal & jam terlebih dahulu.');
+                return;
+            }
+            const newStart = new Date(val);
+            if (isNaN(newStart.getTime())) {
+                showToast('Format tanggal/jam tidak valid.');
+                return;
+            }
+            if (newStart.getTime() > Date.now()) {
+                showToast('Jam mulai tidak boleh di masa depan.');
+                return;
+            }
+            appState.fasting.startTime = newStart.toISOString();
+            appState.fasting.completedNotified = false; // re-evaluasi status target dengan jam mulai yang baru
+            saveStateToStorage();
+            renderFastingTimerUI();
+            if (typeof renderMealSchedule === 'function') renderMealSchedule();
+            closeEditFastingStartModal();
+            showToast('Jam mulai puasa berhasil diperbarui.');
+            playBeep(700, 0.12);
+        }
+
         function toggleFastingTimer() {
             if (appState.fasting && appState.fasting.active) {
                 stopFasting();
@@ -830,7 +1158,7 @@
         function startFasting() {
             const targetHours = getFastingTargetHours(appState.ifPhase);
             if (!targetHours) {
-                showToast('Pilih regimen jendela puasa 17:7 / 19:5 / 20:4 terlebih dahulu.');
+                showToast('Pilih regimen dengan timer harian (16:8, 17:7, 19:5, 20:4, OMAD, atau ADF) terlebih dahulu.');
                 return;
             }
             requestNotifPermission();
@@ -851,6 +1179,10 @@
 
         function stopFasting() {
             if (!appState.fasting || !appState.fasting.active) return;
+            const elapsedMsPreview = Date.now() - new Date(appState.fasting.startTime).getTime();
+            const ok = confirm(`Yakin ingin mengakhiri sesi puasa sekarang?\n\nDurasi berjalan: ${formatDurationHMS(elapsedMsPreview)}\n\nTekan OK untuk mengakhiri, atau Batal jika tombol ini tertekan tidak sengaja.`);
+            if (!ok) return;
+
             const elapsedMs = Date.now() - new Date(appState.fasting.startTime).getTime();
             const elapsedLabel = formatDurationHMS(elapsedMs);
 
@@ -884,6 +1216,7 @@
             const elapsedHours = elapsedMs / 3600000;
             const display = document.getElementById('fasting-timer-display');
             if (display) display.innerText = formatDurationHMS(elapsedMs);
+            renderBioPhasePanel(elapsedHours);
 
             if (!f.completedNotified && elapsedHours >= f.targetHours) {
                 f.completedNotified = true;
@@ -903,19 +1236,30 @@
             const display = document.getElementById('fasting-timer-display');
             const subtitle = document.getElementById('fasting-timer-subtitle');
             const btnToggle = document.getElementById('btn-fasting-toggle');
+            const btnEditStart = document.getElementById('btn-edit-fasting-start');
             const hint = document.getElementById('fasting-timer-hint');
             if (!badge || !btnToggle || !display) return;
 
             const targetHours = getFastingTargetHours(appState.ifPhase);
+            const bioBox = document.getElementById('fasting-bio-phase-box');
 
-            if (appState.ifPhase === 0) {
-                badge.innerText = 'Reguler';
+            if (appState.ifPhase === 0 || appState.ifPhase === 7) {
+                const isRegular = appState.ifPhase === 0;
+                badge.innerText = isRegular ? 'Reguler' : '5:2';
                 display.innerText = '00:00:00';
-                subtitle.innerText = 'Mode reguler tidak membatasi waktu makan.';
+                subtitle.innerText = isRegular
+                    ? 'Mode reguler tidak membatasi waktu makan.'
+                    : 'Regimen 5:2 mengikuti pola mingguan, bukan jam harian.';
                 btnToggle.disabled = true;
                 btnToggle.classList.add('opacity-40', 'cursor-not-allowed');
-                btnToggle.innerHTML = '<i class="fa-solid fa-ban mr-2"></i> Mode Reguler Aktif';
-                hint.innerText = 'Ganti regimen di atas jika ingin mengaktifkan timer.';
+                btnToggle.innerHTML = isRegular
+                    ? '<i class="fa-solid fa-ban mr-2"></i> Mode Reguler Aktif'
+                    : '<i class="fa-solid fa-calendar-week mr-2"></i> Regimen Mingguan (Tanpa Timer)';
+                hint.innerText = isRegular
+                    ? 'Ganti regimen di atas jika ingin mengaktifkan timer.'
+                    : 'Pilih 2 hari (tidak berurutan) dalam seminggu untuk membatasi kalori ke 500–600 kkal; 5 hari lainnya makan normal tanpa batasan jam.';
+                btnEditStart.classList.add('hidden');
+                if (bioBox) bioBox.classList.add('hidden');
                 return;
             }
 
@@ -924,25 +1268,79 @@
 
             if (f.active) {
                 badge.innerText = f.completedNotified ? 'Tuntas' : 'Berjalan';
-                badge.className = "text-[9px] font-bold px-2 py-0.5 bg-emerald-500 text-white rounded-full uppercase";
+                badge.className = "text-[12px] font-bold px-2 py-0.5 bg-emerald-500 text-white rounded-full uppercase";
                 subtitle.innerText = `Target: ${f.targetHours} jam · Mulai: ${new Date(f.startTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`;
                 btnToggle.innerHTML = '<i class="fa-solid fa-stop mr-2"></i> Akhiri Sesi Puasa';
-                btnToggle.className = "w-full py-3 rounded-xl font-bold text-xs bg-red-500 hover:bg-red-600 transition-all text-white shadow-md";
+                btnToggle.className = "w-full py-3 rounded-xl font-bold text-sm bg-red-500 hover:bg-red-600 transition-all text-white shadow-md";
                 hint.innerText = "Tekan tombol di atas jika jendela makan Anda telah dibuka.";
+                btnEditStart.classList.remove('hidden');
+                const elapsedHours = (Date.now() - new Date(f.startTime).getTime()) / 3600000;
+                renderBioPhasePanel(elapsedHours);
             } else {
                 badge.innerText = 'Standby';
-                badge.className = "text-[9px] font-bold px-2 py-0.5 bg-slate-600 text-white rounded-full uppercase";
+                badge.className = "text-[12px] font-bold px-2 py-0.5 bg-slate-600 text-white rounded-full uppercase";
                 display.innerText = '00:00:00';
                 subtitle.innerText = `Target: ${targetHours} jam · Tekan Mulai ketika Anda berhenti makan`;
                 btnToggle.innerHTML = '<i class="fa-solid fa-play mr-2"></i> Mulai Puasa';
-                btnToggle.className = "w-full py-3 rounded-xl font-bold text-xs bg-[#8A9A5B] hover:bg-[#76844D] transition-all text-white shadow-md";
+                btnToggle.className = "w-full py-3 rounded-xl font-bold text-sm bg-[#2FA084] hover:bg-[#1F6F5F] transition-all text-white shadow-md";
                 hint.innerText = "Aktifkan setiap hari untuk melacak konsistensi berpuasa Anda.";
+                btnEditStart.classList.add('hidden');
+                if (bioBox) bioBox.classList.add('hidden');
             }
+        }
+
+        // ======================================================================
+        // FASE BIOLOGIS PUASA — dipetakan otomatis ke jam berjalan pada timer
+        // ======================================================================
+        const BIO_FASTING_PHASES = [
+            { maxHour: 4, label: 'Fase Absorptif', color: '#60A5FA', range: '0–4 Jam',
+              hormonal: 'Insulin melonjak membantu sel menyerap glukosa dari makanan.',
+              metabolism: 'Glukosa dibakar jadi energi; sisanya disimpan di hati & otot sebagai glikogen, sebagian jadi lemak.',
+              cellular: 'Proses anabolik (pertumbuhan & penyimpanan) sedang aktif.' },
+            { maxHour: 12, label: 'Pasca-Absorptif', color: '#22D3EE', range: '4–12 Jam',
+              hormonal: 'Gula darah mulai stabil, insulin menurun signifikan; glukagon naik.',
+              metabolism: 'Tubuh mulai membakar cadangan glikogen di hati untuk menjaga gula darah normal.',
+              cellular: 'Transisi bertahap menuju pemakaian cadangan energi.' },
+            { maxHour: 18, label: 'Transisi Metabolik & Lipolisis', color: '#10B981', range: '12–18 Jam',
+              hormonal: 'Insulin berada di level dasar (baseline) yang rendah.',
+              metabolism: 'Glikogen hati menyusut 50–80%; lipolisis dimulai (lemak dipecah jadi asam lemak bebas).',
+              cellular: 'Hati mulai memproduksi keton (BHB) — bahan bakar super untuk fokus mental. Sweet spot bagi pelaku 16:8/17:7/19:5.' },
+            { maxHour: 24, label: 'Ketosis Aktif & Awal Autofagi', color: '#2FA084', range: '18–24 Jam',
+              hormonal: 'Hormon Pertumbuhan (HGH) melonjak drastis (hingga 200–500%) melindungi massa otot.',
+              metabolism: 'Tubuh resmi berada dalam ketosis ringan; pembakaran lemak sangat dominan.',
+              cellular: 'Autofagi dimulai — sel mendaur ulang protein rusak & membasmi patogen intraseluler. Optimal bagi pelaku 20:4 dan OMAD.' },
+            { maxHour: Infinity, label: 'Autofagi Maksimal & Regenerasi Sel', color: '#A855F7', range: '24–48 Jam',
+              hormonal: 'Insulin tetap sangat rendah; sensitivitas insulin seluler meningkat dramatis.',
+              metabolism: 'Ketosis berlanjut dalam; sangat baik untuk pembalikan resistensi insulin/Diabetes Tipe 2.',
+              cellular: 'Autofagi mencapai puncak; sel imun rusak dihancurkan (apoptosis); penanda inflamasi (CRP) menurun tajam.' }
+        ];
+
+        function getBiologicalPhaseInfo(elapsedHours) {
+            return BIO_FASTING_PHASES.find(p => elapsedHours < p.maxHour) || BIO_FASTING_PHASES[BIO_FASTING_PHASES.length - 1];
+        }
+
+        function renderBioPhasePanel(elapsedHours) {
+            const box = document.getElementById('fasting-bio-phase-box');
+            if (!box) return;
+            const phase = getBiologicalPhaseInfo(elapsedHours);
+            box.classList.remove('hidden');
+            const dot = document.getElementById('bio-phase-dot');
+            if (dot) dot.style.backgroundColor = phase.color;
+            const labelEl = document.getElementById('bio-phase-label');
+            if (labelEl) { labelEl.innerText = phase.label; labelEl.style.color = phase.color; }
+            const rangeEl = document.getElementById('bio-phase-range');
+            if (rangeEl) rangeEl.innerText = phase.range;
+            const h = document.getElementById('bio-phase-hormonal');
+            if (h) h.innerText = phase.hormonal;
+            const m = document.getElementById('bio-phase-metabolism');
+            if (m) m.innerText = phase.metabolism;
+            const c = document.getElementById('bio-phase-cellular');
+            if (c) c.innerText = phase.cellular;
         }
 
         function getMealSchedule(ifPhase, targetCalorie, dayMenu) {
             const kcal = (pct) => Math.round(targetCalorie * pct);
-            if (ifPhase === 0) {
+            if (ifPhase === 0 || ifPhase === 7) {
                 return [
                     { time: '07:00', title: 'Sarapan Sehat', desc: `${dayMenu.sarapan} (~${kcal(0.25)} kkal)`, dot: 'bg-blue-500' },
                     { time: '10:00', title: 'Camilan Pagi', desc: `${dayMenu.snack} (~${kcal(0.10)} kkal)`, dot: 'bg-amber-500' },
@@ -1019,6 +1417,15 @@
                 initMacroChart();
             } else if (tabName === 'milestones') {
                 initJourneyChart();
+                initWeightTrendChart();
+                // Tandai tombol timeframe default sebagai aktif secara visual
+                document.querySelectorAll('.trend-range-btn').forEach(btn => {
+                    if (btn.dataset.range === currentTrendRange) {
+                        btn.className = "trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-transparent bg-[#2FA084] text-white transition-all";
+                    } else {
+                        btn.className = "trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-gray-200 text-slate-600 transition-all";
+                    }
+                });
             }
         }
 
@@ -1127,7 +1534,7 @@
             appState.selectedMenuDay = (new Date().getDay() + 6) % 7;
             appState.startDate = new Date().toISOString();
             appState.weightHistory = generateWeightHistory(weightKg, targetWeight);
-            appState.customLogs = [{ date: 'Awal', weight: weightKg }];
+            appState.customLogs = [{ date: 'Awal', weight: weightKg, ts: appState.startDate }];
             appState.waterLogged = 0;
 
             const built = buildWorkoutsFromProfile(computed, age);
@@ -1184,6 +1591,13 @@
             renderFoodLog();
             updateCalorieSummary();
             renderFastingTimerUI();
+            // Bug fix: lanjutkan interval jam berjalan kalau ada sesi puasa yang masih aktif saat app dibuka lagi
+            // (sebelumnya cuma dirender sekali lalu diam, jadi kelihatan seperti "mati" walau datanya sebenarnya utuh)
+            if (appState.fasting && appState.fasting.active) {
+                startFastingInterval();
+            } else {
+                stopFastingInterval();
+            }
             updateWaterUI();
             renderChartForTab(currentActiveTab);
         }
@@ -1248,13 +1662,63 @@
             }
         }
 
-        function openProfileSwitcher() {
+        // ======================================================================
+        // MODAL PENGATURAN (Profil / Tema / Font)
+        // ======================================================================
+        function openSettingsModal(tab) {
             renderProfileSwitcherList();
-            document.getElementById('profile-switcher-modal').classList.remove('hidden');
+            document.getElementById('settings-modal').classList.remove('hidden');
+            switchSettingsTab(tab || 'profil');
         }
 
-        function closeProfileSwitcher() {
-            document.getElementById('profile-switcher-modal').classList.add('hidden');
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function switchSettingsTab(tab) {
+            ['profil', 'tema', 'font'].forEach(t => {
+                const pane = document.getElementById(`settings-pane-${t}`);
+                const btn = document.getElementById(`settings-tab-btn-${t}`);
+                if (pane) pane.classList.toggle('hidden', t !== tab);
+                if (btn) btn.classList.toggle('selected', t === tab);
+            });
+        }
+
+        // Alias lama dipertahankan (dipanggil dari beberapa tempat lain di kode
+        // untuk menutup/membuka panel profil) supaya tidak mengubah fungsi lain.
+        function openProfileSwitcher() { openSettingsModal('profil'); }
+        function closeProfileSwitcher() { closeSettingsModal(); }
+
+        // ---- TEMA ----
+        function setTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('theme-dark', isDark);
+            localStorage.setItem('ortuSehatTheme', theme);
+            document.getElementById('theme-choice-light').classList.toggle('selected', !isDark);
+            document.getElementById('theme-choice-dark').classList.toggle('selected', isDark);
+            if (typeof updateChartsForTheme === 'function') updateChartsForTheme();
+        }
+
+        function loadThemePref() {
+            const saved = localStorage.getItem('ortuSehatTheme') || 'light';
+            setTheme(saved);
+        }
+
+        // ---- FONT ----
+        function setFontLevel(level) {
+            const levels = ['small', 'medium', 'large', 'jumbo'];
+            document.documentElement.classList.remove(...levels.map(l => `font-${l}`));
+            document.documentElement.classList.add(`font-${level}`);
+            localStorage.setItem('ortuSehatFontLevel', level);
+            levels.forEach(l => {
+                const btn = document.getElementById(`font-choice-${l}`);
+                if (btn) btn.classList.toggle('selected', l === level);
+            });
+        }
+
+        function loadFontPref() {
+            const saved = localStorage.getItem('ortuSehatFontLevel') || 'medium';
+            setFontLevel(saved);
         }
 
         function renderProfileSwitcherList() {
@@ -1263,22 +1727,22 @@
                 const isActive = p.id === profilesStore.activeId;
                 const hasPlan = !!(p.data && p.data.profile);
                 return `
-                <div class="flex items-center gap-2 p-3 rounded-2xl border-2 ${isActive ? 'border-[#8A9A5B] bg-[#8A9A5B]/10' : 'border-gray-100 bg-gray-50'}">
+                <div class="flex items-center gap-2 p-3 rounded-2xl border-2 ${isActive ? 'border-[#2FA084] bg-[#2FA084]/10' : 'border-gray-100 bg-gray-50'}">
                     <button onclick="switchProfile('${p.id}')" class="flex-grow flex items-center gap-3 text-left">
-                        <div class="w-9 h-9 rounded-full ${isActive ? 'bg-[#8A9A5B] text-white' : 'bg-white text-gray-400 border border-gray-200'} flex items-center justify-center">
-                            <i class="fa-solid fa-user text-xs"></i>
+                        <div class="w-9 h-9 rounded-full ${isActive ? 'bg-[#2FA084] text-white' : 'bg-white text-slate-600 border border-gray-200'} flex items-center justify-center">
+                            <i class="fa-solid fa-user text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-slate-800">${p.name}${isActive ? ' <span class=\'text-[#76844D] text-[10px]\'>(Aktif)</span>' : ''}</p>
-                            <p class="text-[10px] text-gray-400">${hasPlan ? 'Rencana Siap' : 'Onboarding Belum Selesai'}</p>
+                            <p class="text-sm font-bold text-slate-800">${p.name}${isActive ? ' <span class=\'text-[#1F6F5F] text-[13px]\'>(Aktif)</span>' : ''}</p>
+                            <p class="text-[13px] text-slate-600">${hasPlan ? 'Rencana Siap' : 'Onboarding Belum Selesai'}</p>
                         </div>
                     </button>
-                    <button onclick="promptRenameProfile('${p.id}')" class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#8A9A5B]">
-                        <i class="fa-solid fa-pen text-[9px]"></i>
+                    <button onclick="promptRenameProfile('${p.id}')" class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-slate-600 hover:text-[#2FA084]">
+                        <i class="fa-solid fa-pen text-[12px]"></i>
                     </button>
                     ${profilesStore.profiles.length > 1 ? `
-                    <button onclick="promptDeleteProfile('${p.id}')" class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500">
-                        <i class="fa-solid fa-trash text-[9px]"></i>
+                    <button onclick="promptDeleteProfile('${p.id}')" class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-slate-600 hover:text-red-500">
+                        <i class="fa-solid fa-trash text-[12px]"></i>
                     </button>` : ''}
                 </div>`;
             }).join('');
@@ -1390,7 +1854,7 @@
 
             const today = new Date();
             const dateStr = `${today.getDate()}/${today.getMonth() + 1} ${today.getHours().toString().padStart(2, '0')}:${today.getMinutes().toString().padStart(2, '0')}`;
-            appState.customLogs.unshift({ date: dateStr, weight: newWeight });
+            appState.customLogs.unshift({ date: dateStr, weight: newWeight, ts: today.toISOString() });
 
             const startDate = new Date(appState.startDate);
             const daysElapsed = Math.max(0, Math.floor((today - startDate) / (1000 * 60 * 60 * 24)));
@@ -1412,7 +1876,7 @@
             if (!confirm('Yakin ingin mereset seluruh progres berat badan?')) return;
             appState.currentWeight = appState.profile.weightKg;
             appState.startDate = new Date().toISOString();
-            appState.customLogs = [{ date: 'Awal', weight: appState.profile.weightKg }];
+            appState.customLogs = [{ date: 'Awal', weight: appState.profile.weightKg, ts: appState.startDate }];
             appState.weightHistory.forEach((item, index) => {
                 if (index > 0) item.weight = null;
             });
@@ -1428,15 +1892,45 @@
             if (!container) return;
             container.innerHTML = '';
 
-            appState.customLogs.forEach(log => {
+            appState.customLogs.forEach((log, index) => {
                 const row = document.createElement('div');
-                row.className = "flex justify-between items-center py-2.5 text-xs border-b border-gray-50";
+                row.className = "flex justify-between items-center py-3 text-sm border-b border-gray-50";
+                const canDelete = appState.customLogs.length > 1;
                 row.innerHTML = `
-                    <span class="text-gray-400 font-semibold">${log.date}</span>
-                    <span class="font-extrabold text-slate-800">${log.weight.toFixed(1)} kg</span>
+                    <span class="text-slate-600 font-semibold">${log.date}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-extrabold text-slate-800">${log.weight.toFixed(1)} kg</span>
+                        <button onclick="deleteWeightLogEntry(${index})" class="w-7 h-7 rounded-full flex items-center justify-center text-red-400 hover:bg-red-50 transition-all ${canDelete ? '' : 'opacity-30 cursor-not-allowed pointer-events-none'}" title="Hapus catatan ini">
+                            <i class="fa-solid fa-trash-can text-[13px]"></i>
+                        </button>
+                    </div>
                 `;
                 container.appendChild(row);
             });
+        }
+
+        function deleteWeightLogEntry(index) {
+            if (appState.customLogs.length <= 1) {
+                showToast('Minimal harus ada 1 catatan. Gunakan "Reset" jika ingin menghapus semuanya.');
+                return;
+            }
+            const entry = appState.customLogs[index];
+            if (!entry) return;
+            if (!confirm(`Hapus catatan berat ${entry.weight.toFixed(1)} kg (${entry.date}) ini?`)) return;
+
+            appState.customLogs.splice(index, 1);
+
+            // Kalau yang dihapus adalah catatan paling baru (indeks 0), berat saat ini disesuaikan
+            // ke catatan terbaru yang tersisa supaya dashboard tetap konsisten dengan riwayatnya.
+            if (index === 0 && appState.customLogs.length > 0) {
+                appState.currentWeight = appState.customLogs[0].weight;
+            }
+
+            renderWeightLog();
+            updateUI();
+            renderChartForTab(currentActiveTab);
+            saveStateToStorage();
+            showToast('Catatan berat badan dihapus.');
         }
 
         function updateUI() {
@@ -1456,13 +1950,13 @@
                 targetEl.style.color = "#10B981";
             } else {
                 targetEl.innerText = `${targetDiff.toFixed(1)} kg lagi`;
-                targetEl.style.color = "#76844D";
+                targetEl.style.color = "#1F6F5F";
             }
 
             const category = computeBmiCategory(bmi);
             const badge = document.getElementById('bmi-badge');
             badge.innerText = category.label;
-            badge.className = `inline-block mt-2 px-2.5 py-0.5 ${category.badgeClass} text-[9px] font-bold rounded-full uppercase`;
+            badge.className = `inline-block mt-2 px-2.5 py-0.5 ${category.badgeClass} text-[12px] font-bold rounded-full uppercase`;
 
             const genderLabel = appState.profile.gender === 'L' ? 'Pria' : 'Wanita';
             const entry = getActiveProfileEntry();
@@ -1501,10 +1995,13 @@
 
         function setIFPhaseUIOnly(phase) {
             const textEl = document.getElementById('active-if-phase');
-            const labelMap = { 0: 'Reguler (Bebas)', 1: 'Fase 1 (17:7)', 2: 'Fase 2 (19:5)', 3: 'Fase 3 (20:4)' };
+            const labelMap = {
+                0: 'Reguler (Bebas)', 1: 'Fase 1 (17:7)', 2: 'Fase 2 (19:5)', 3: 'Fase 3 (20:4)',
+                4: '16:8 (Leangains)', 5: 'OMAD (23:1)', 6: 'ADF (36:12)', 7: '5:2'
+            };
             if (textEl) textEl.innerText = labelMap[phase];
 
-            for (let i = 0; i <= 3; i++) {
+            for (let i = 0; i <= 7; i++) {
                 const btn = document.getElementById(`btn-if-${i}`);
                 if (btn) {
                     if (i === phase) btn.classList.add('selected');
@@ -1520,6 +2017,7 @@
             }
 
             selectMenuDay(appState.selectedMenuDay || 0);
+            if (typeof renderFastingTimerUI === 'function') renderFastingTimerUI();
         }
 
         function renderMealSchedule() {
@@ -1536,7 +2034,8 @@
             if (win) {
                 const prefix = win.isLive ? 'Jendela Makan (aktual)' : 'Jendela Makan (jika mulai sekarang)';
                 windowLabelEl.innerText = `${prefix}: ${win.startLabel} - ${win.endLabel}`;
-                windowDurationEl.innerText = `${win.hours} jam makan / ${24 - win.hours} jam puasa`;
+                const fastHoursForPhase = getFastingTargetHours(appState.ifPhase) || (24 - win.hours);
+                windowDurationEl.innerText = `${win.hours} jam makan / ${fastHoursForPhase} jam puasa`;
             } else {
                 windowLabelEl.innerText = `Mode Reguler Terjadwal`;
                 windowDurationEl.innerText = `Tidak ada batasan puasa harian`;
@@ -1546,7 +2045,7 @@
                 <div class="relative pl-2">
                     <div class="absolute -left-[30px] top-1 w-3 h-3 rounded-full ${item.dot} border-2 border-white shadow"></div>
                     <h4 class="font-bold text-slate-800">${item.time !== '-' ? item.time + ' - ' : ''}${item.title}</h4>
-                    <p class="text-gray-400 text-[11px] mt-0.5 leading-relaxed">${item.desc}</p>
+                    <p class="text-slate-600 text-[13px] mt-0.5 leading-relaxed">${item.desc}</p>
                 </div>
             `).join('');
 
@@ -1562,7 +2061,7 @@
             const chipContainer = document.getElementById('day-chip-container');
             if (!chipContainer) return;
             chipContainer.innerHTML = weeklyMenu.map((d, idx) => `
-                <button onclick="selectMenuDay(${idx})" id="day-chip-${idx}" class="day-chip flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-gray-50 text-gray-500 border border-gray-100 transition-all">
+                <button onclick="selectMenuDay(${idx})" id="day-chip-${idx}" class="day-chip flex-shrink-0 px-4 py-2 rounded-xl dark:bg-white text-sm font-bold bg-[#2FA084] text-white dark:text-[#2FA084] border border-gray-100 transition-all">
                     ${d.day}
                 </button>
             `).join('');
@@ -1581,14 +2080,14 @@
 
             if (detail) {
                 const sarapanRow = win
-                    ? `<div class="flex justify-between opacity-50"><span class="font-bold text-slate-400">Sarapan</span><span class="text-gray-400 italic">Dilewati (Jendela tutup hingga ${win.startLabel})</span></div>`
-                    : `<div class="flex justify-between"><span class="font-bold text-slate-700">Sarapan</span><span class="text-gray-500">${menu.sarapan}</span></div>`;
+                    ? `<div class="flex justify-between "><span class="font-bold text-[#2FA084] ">Sarapan</span><span class="font-bold text-[#2FA084] italic">Dilewati (Jendela tutup hingga ${win.startLabel})</span></div>`
+                    : `<div class="flex justify-between"><span class="font-bold  dark:text-white">Sarapan</span><span class="text-slate-800">${menu.sarapan}</span></div>`;
 
                 detail.innerHTML = `
                     ${sarapanRow}
-                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Makan Siang</span><span class="text-gray-500 text-right">${menu.siang}</span></div>
-                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Makan Malam</span><span class="text-gray-500 text-right">${menu.malam}</span></div>
-                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Camilan</span><span class="text-gray-500 text-right">${menu.snack}</span></div>
+                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Makan Siang</span><span class="text-slate-800 text-right">${menu.siang}</span></div>
+                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Makan Malam</span><span class="text-slate-800 text-right">${menu.malam}</span></div>
+                    <div class="flex justify-between gap-2 border-t border-gray-100 pt-1.5"><span class="font-bold text-slate-700">Camilan</span><span class="text-slate-800 text-right">${menu.snack}</span></div>
                 `;
             }
             renderMealSchedule();
@@ -1642,7 +2141,7 @@
             const matches = foodDatabase.filter(f => f.n.toLowerCase().includes(query)).slice(0, 10);
 
             if (matches.length === 0) {
-                resultsBox.innerHTML = `<div class="p-4 text-xs text-gray-400 text-center">Makanan tidak ditemukan di database lokal.</div>`;
+                resultsBox.innerHTML = `<div class="p-4 text-sm text-slate-600 text-center">Makanan tidak ditemukan di database lokal.</div>`;
                 resultsBox.classList.remove('hidden');
                 return;
             }
@@ -1652,10 +2151,10 @@
                 return `
                 <button onclick="addFoodToLog(${dbIndex})" class="w-full text-left p-3 hover:bg-gray-50 transition-all flex justify-between items-center gap-2">
                     <div class="min-w-0">
-                        <p class="text-xs font-bold text-slate-800 truncate">${f.n}</p>
-                        <p class="text-[10px] text-gray-400 truncate">${f.d}</p>
+                        <p class="text-sm font-bold text-slate-800 truncate">${f.n}</p>
+                        <p class="text-[13px] text-slate-600 truncate">${f.d}</p>
                     </div>
-                    <span class="text-[10px] font-extrabold text-[#76844D] flex-shrink-0">~${f.a} kkal</span>
+                    <span class="text-[13px] font-extrabold text-[#1F6F5F] flex-shrink-0">~${f.a} kkal</span>
                 </button>`;
             }).join('');
             resultsBox.classList.remove('hidden');
@@ -1736,15 +2235,15 @@
             emptyNote.classList.add('hidden');
 
             container.innerHTML = appState.foodLog.map(item => `
-                <div class="flex items-center justify-between py-2.5 gap-2 text-xs border-b border-gray-50">
+                <div class="flex items-center justify-between py-2.5 gap-2 text-sm border-b border-gray-50">
                     <div class="min-w-0 flex-grow">
                         <p class="font-bold text-slate-800 truncate">${item.name}</p>
-                        <p class="text-[9px] text-gray-400">${item.time} • ${item.kcal} kkal</p>
+                        <p class="text-[12px] text-slate-600">${item.time} • ${item.kcal} kkal</p>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <input type="number" step="0.5" min="0.25" value="${item.portion}" onchange="updateFoodPortion(${item.id}, this.value)" class="w-12 bg-gray-50 border border-gray-200 rounded-lg px-1 py-1 text-center font-bold text-slate-700 text-[10px]" title="Porsi">
+                        <input type="number" step="0.5" min="0.25" value="${item.portion}" onchange="updateFoodPortion(${item.id}, this.value)" class="w-12 bg-gray-50 border border-gray-200 rounded-lg px-1 py-1 text-center font-bold text-slate-700 text-[13px]" title="Porsi">
                         <button onclick="removeFoodLog(${item.id})" class="w-7 h-7 rounded-full bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-100 transition-all">
-                            <i class="fa-solid fa-xmark text-xs"></i>
+                            <i class="fa-solid fa-xmark text-sm"></i>
                         </button>
                     </div>
                 </div>
@@ -1773,16 +2272,16 @@
                 remainingLabel.innerText = "Berlebih";
                 remainingDisplay.innerText = `+${Math.abs(remaining)}`;
                 remainingBox.className = "p-3 rounded-2xl border bg-red-50 border-red-100 text-red-500";
-                remainingLabel.className = "text-[10px] font-medium text-red-400";
+                remainingLabel.className = "text-[13px] font-medium text-red-400";
                 remainingDisplay.className = "text-base font-extrabold text-red-600";
                 progressBar.className = "h-full rounded-full transition-all duration-300 bg-red-500";
             } else {
                 remainingLabel.innerText = "Sisa";
                 remainingDisplay.innerText = remaining;
-                remainingBox.className = "p-3 rounded-2xl border bg-[#8A9A5B]/10 border-[#8A9A5B]/20 text-[#76844D]";
-                remainingLabel.className = "text-[10px] font-medium text-[#76844D]";
-                remainingDisplay.className = "text-base font-extrabold text-[#76844D]";
-                progressBar.className = "h-full rounded-full transition-all duration-300 bg-[#8A9A5B]";
+                remainingBox.className = "p-3 rounded-2xl border bg-[#2FA084]/10 border-[#2FA084]/20 text-[#1F6F5F]";
+                remainingLabel.className = "text-[13px] font-medium text-[#1F6F5F]";
+                remainingDisplay.className = "text-base font-extrabold text-[#1F6F5F]";
+                progressBar.className = "h-full rounded-full transition-all duration-300 bg-[#2FA084]";
             }
         }
 
@@ -1813,21 +2312,21 @@
                 <div class="${cardClasses}" id="card-ex-${w.id}">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${categoryColors[w.category] || 'text-gray-500 bg-gray-50'}">${w.category}</span>
+                            <span class="text-[12px] font-bold uppercase px-2 py-0.5 rounded-full ${categoryColors[w.category] || 'text-slate-800 bg-gray-50'}">${w.category}</span>
                             <h4 class="font-bold text-slate-800 mt-1">${w.name}</h4>
-                            <p class="text-[11px] text-gray-400" id="target-ex-${w.id}">Target: ${w.setTarget} Set &times; ${w.repTarget} ${unitLabel}</p>
+                            <p class="text-[13px] text-slate-600" id="target-ex-${w.id}">Target: ${w.setTarget} Set &times; ${w.repTarget} ${unitLabel}</p>
                         </div>
                         <button onclick="toggleExerciseComplete(${w.id})" id="check-ex-${w.id}" class="${checkClasses}">
                             <i class="fa-solid fa-check text-sm"></i>
                         </button>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-50 text-xs">
+                    <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-50 text-sm">
                         <div>
-                            <label class="text-[10px] font-bold text-gray-400 block mb-1">Set Selesai</label>
+                            <label class="text-[13px] font-bold text-slate-600 block mb-1">Set Selesai</label>
                             <input type="number" id="input-ex-set-${w.id}" value="${w.set}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-slate-700 text-center">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-gray-400 block mb-1">${inputLabel2}</label>
+                            <label class="text-[13px] font-bold text-slate-600 block mb-1">${inputLabel2}</label>
                             <input type="number" id="input-ex-rep-${w.id}" value="${w.rep}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-slate-700 text-center">
                         </div>
                     </div>
@@ -1944,6 +2443,8 @@
 
         // Initialize App on Window Load
         window.onload = function() {
+            loadThemePref();
+            loadFontPref();
             loadProfilesStore();
             loadActiveProfileIntoApp();
         };
@@ -1951,6 +2452,17 @@
         // ======================================================================
         // MANAJEMEN GRAFIK (CHART.JS) DENGAN PENCEGAHAN MEMORY LEAK & ZERO SIZE CANVAS
         // ======================================================================
+        function updateChartsForTheme() {
+            const isDark = document.body.classList.contains('theme-dark');
+            if (typeof Chart !== 'undefined' && Chart.defaults) {
+                Chart.defaults.color = isDark ? '#9CB080' : '#6B7280';
+                Chart.defaults.borderColor = isDark ? '#618764' : '#E5E7EB';
+            }
+            if (typeof renderChartForTab === 'function' && typeof currentActiveTab !== 'undefined' && appState && appState.computed) {
+                renderChartForTab(currentActiveTab);
+            }
+        }
+
         function initBmiChart() {
             if (bmiChartInstance) {
                 bmiChartInstance.destroy();
@@ -1968,7 +2480,7 @@
                     labels: ['BMI Aktual', 'BMI Target'],
                     datasets: [{
                         data: [computed.bmi, +targetBmi.toFixed(1)],
-                        backgroundColor: [computed.bmi >= 25.0 ? '#EF4444' : (computed.bmi >= 23.0 ? '#F59E0B' : '#10B981'), '#8A9A5B'],
+                        backgroundColor: [computed.bmi >= 25.0 ? '#EF4444' : (computed.bmi >= 23.0 ? '#F59E0B' : '#10B981'), '#2FA084'],
                         borderRadius: 12,
                         barThickness: 24
                     }]
@@ -1978,8 +2490,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, max: 35, ticks: { font: { size: 9 } } },
-                        x: { ticks: { font: { size: 9, weight: 'bold' } } }
+                        y: { beginAtZero: true, max: 35, ticks: { font: { size: 12 } } },
+                        x: { ticks: { font: { size: 12, weight: 'bold' } } }
                     }
                 }
             });
@@ -2014,6 +2526,90 @@
             });
         }
 
+        // ======================================================================
+        // GRAFIK TREN BERAT BADAN (dengan filter timeframe 1 Minggu/1 Bulan/1 Tahun)
+        // ======================================================================
+        let weightTrendChartInstance = null;
+        let currentTrendRange = '1M';
+
+        function setWeightTrendRange(range) {
+            currentTrendRange = range;
+            document.querySelectorAll('.trend-range-btn').forEach(btn => {
+                if (btn.dataset.range === range) {
+                    btn.className = "trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-transparent bg-[#2FA084] text-white transition-all";
+                } else {
+                    btn.className = "trend-range-btn flex-1 py-2 rounded-xl text-sm font-bold border border-gray-200 text-slate-600 transition-all";
+                }
+            });
+            initWeightTrendChart();
+        }
+
+        function initWeightTrendChart() {
+            if (weightTrendChartInstance) {
+                weightTrendChartInstance.destroy();
+                weightTrendChartInstance = null;
+            }
+            const canvas = document.getElementById('weightTrendChart');
+            const emptyState = document.getElementById('weight-trend-empty');
+            if (!canvas) return;
+
+            const rangeDays = { '1W': 7, '1M': 30, '1Y': 365 }[currentTrendRange] || 30;
+            const cutoff = Date.now() - rangeDays * 24 * 60 * 60 * 1000;
+
+            // Ambil hanya entri yang punya timestamp valid & masuk rentang waktu, urutkan dari lama ke baru
+            const points = appState.customLogs
+                .filter(log => log.ts && new Date(log.ts).getTime() >= cutoff)
+                .map(log => ({ x: new Date(log.ts).getTime(), weight: log.weight, date: log.date }))
+                .sort((a, b) => a.x - b.x);
+
+            if (points.length === 0) {
+                canvas.classList.add('hidden');
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+            canvas.classList.remove('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
+
+            const labels = points.map(p => {
+                const d = new Date(p.x);
+                return currentTrendRange === '1Y'
+                    ? d.toLocaleDateString('id-ID', { month: 'short', year: '2-digit' })
+                    : d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+            });
+            const weights = points.map(p => p.weight);
+            const minY = Math.max(0, Math.floor(Math.min(...weights) - 2));
+            const maxY = Math.ceil(Math.max(...weights) + 2);
+
+            const ctx = canvas.getContext('2d');
+            weightTrendChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Berat Badan',
+                        data: weights,
+                        borderColor: '#2FA084',
+                        backgroundColor: 'rgba(47, 160, 132, 0.1)',
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: points.length > 1 ? 4 : 6,
+                        pointBackgroundColor: '#2FA084'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: minY, max: maxY, ticks: { callback: v => v + ' kg', font: { size: 14 } } },
+                        x: { ticks: { font: { size: 13 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
         function initJourneyChart() {
             if (journeyChartInstance) {
                 journeyChartInstance.destroy();
@@ -2037,8 +2633,8 @@
                         {
                             label: 'Garis Target',
                             data: planData,
-                            borderColor: '#8A9A5B',
-                            backgroundColor: 'rgba(138, 154, 91, 0.05)',
+                            borderColor: '#2FA084',
+                            backgroundColor: 'rgba(47, 160, 132, 0.05)',
                             borderDash: [5, 5],
                             tension: 0.35,
                             fill: true,
@@ -2059,13 +2655,13 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { min: minY, max: maxY, ticks: { callback: v => v + ' kg', font: { size: 9 } } },
-                        x: { ticks: { font: { size: 9 } } }
+                        y: { min: minY, max: maxY, ticks: { callback: v => v + ' kg', font: { size: 12 } } },
+                        x: { ticks: { font: { size: 12 } } }
                     },
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: { boxWidth: 10, font: { size: 9, weight: 'bold' } }
+                            labels: { boxWidth: 10, font: { size: 12, weight: 'bold' } }
                         }
                     }
                 }
